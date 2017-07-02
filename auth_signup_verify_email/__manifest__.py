@@ -15,8 +15,8 @@
     'installable': True,
     "external_dependencies": {
         "python": [
-            "lxml",
-            "validate_email",
+            "lxml", #Esta lib se debe instalar con pip: sudo pip install lxml
+            "validate_email", #Esta lib se debe instalar con pip: sudo pip install validate_email
         ],
     },
     "depends": [
