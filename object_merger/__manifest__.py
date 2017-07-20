@@ -27,7 +27,7 @@
         #Wizard
         'wizard/object_merger_view.xml',
         #Views
-        'views/res_config_view.xml'
+        'views/res_config_settings_view.xml'
     ],
     'installable': True
 }
