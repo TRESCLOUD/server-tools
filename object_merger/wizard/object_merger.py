@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, api, fields, models, SUPERUSER_ID
+from odoo import _, api, fields as odoo_fields, models, SUPERUSER_ID
 #TODO :Ver con que se sustituyó esto en la
 #TODO: versión 10
 from openerp.tools import ustr
+from odoo.exceptions import ValidationError
 
 
 class ObjectMerger(models.TransientModel):
@@ -46,45 +47,42 @@ class ObjectMerger(models.TransientModel):
         Merges two or more objects
         '''
         property_ids = []
-        # Este código fue modificado por TRESCLOUD
-        ##############################################################################
-        object = {}                                                                  #
-        #res = self.read(cr, uid, ids, context=context)[0]                           #
-        ##############################################################################
+        object = {}
+
         active_model = self.env.context.get('active_model')
         property_obj = self.env['ir.property']
         if not active_model:
-            raise orm.except_orm(_('Configuration Error!'),
-                 _('The is no active model defined!'))
+            raise ValidationError(_('There is no active model defined!'))
         model_pool = self.env[active_model]
         object_ids = self.env.context.get('active_ids',[])
         field_to_read = self.env.context.get('field_to_read')
         fields = field_to_read and [field_to_read] or []
-        # Este código fue modificado por TRESCLOUD
-        #TODO: Se pudiera intentar pasar por contexto el modelo
-        ######################################################################
+
+        #TODO: Este caso queda por probar, como puedo configurar el
+        #TODO: ecua_fiscal_positions_core
         if self.env.context.get('origin', False) != 'ecua_fiscal_positions_core':
             object = self.read(fields)
             object = object[0]
-            #object = self.browse(self._ids[0])
         else:
             fiscal_position = model_pool.browse(ids[0])
-            object.update({'id': self._ids[0], fields[0]: (self._ids[0],
+            object.update({'id': self.id, fields[0]: (self.id,
                                                      fiscal_position.name)})
+        #TODO: nos queda por probar!, nunca entra aquí
         if self.env.context.get('to_invoke'):
             object.update({field_to_read: [self.env.context.get(
                 'object_to_preserve_id')]})
-        ######################################################################
+
         if object and fields and object[field_to_read]:
             object_id = object[field_to_read][0]
         else:
-            raise orm.except_orm(_('Configuration Error!'),
-                 _('Please select one value to keep'))
+            raise ValidationError(_('Please select one value to keep'))
         # For one2many fields on res.partner
         self.env.cr.execute("SELECT name, model FROM ir_model_fields WHERE "
                     "relation=%s and ttype not in ('many2many', 'one2many');",
                             (active_model, ))
         for name, model_raw in self.env.cr.fetchall():
+            #TODO: todo lo relacionado con fiscal_position y account_position,
+            # ncesitamos explicación
             if name == 'property_account_position' and \
                             model_raw == 'res.partner':
                 for id in object_ids:
@@ -101,14 +99,13 @@ class ObjectMerger(models.TransientModel):
             if hasattr(self.env[model_raw], '_check_time'):
                 continue
             else:
-                if hasattr(self.env[model_raw], '_columns'):
-                    from odoo import fields
-                    if self.env[model_raw]._columns.get(name, False) and \
-                            (isinstance(self.env[model_raw]._columns[name],
-                                        fields.many2one) \
-                            or isinstance(self.env[model_raw]._columns[name],
-                                          fields.function) \
-                            and self.env[model_raw]._columns[name].store):
+                if hasattr(self.env[model_raw], '_fields'):
+                    if (self.env[model_raw]._fields.get(name, False) and
+                                isinstance(self.env[model_raw]._fields[name],
+                                           odoo_fields.Many2one)) and \
+                            (not self.env[model_raw]._fields[name].compute \
+                            and self.env[model_raw]._fields[name].related or
+                                 self.env[model_raw]._fields[name].store):
                         if hasattr(self.env[model_raw], '_table'):
                             model = self.env[model_raw]._table
                         else:
@@ -121,31 +118,28 @@ class ObjectMerger(models.TransientModel):
         self.env.cr.execute("select name, model from ir_model_fields where "
                     "relation=%s and ttype in ('many2many');", (active_model,))
         for field, model in self.env.cr.fetchall():
-            field_data = self.env[model] and self.env[
-                model]._columns.get(field, False) \
-                            and (isinstance(self.env[model]._columns[field],
-                                            fields.many2many) \
-                            or isinstance(self.env[model]._columns[field],
-                                          fields.function) \
-                            and self.env[model]._columns[field].store) \
-                            and self.env[model]._columns[field] \
-                            or False
+            field_data = self.env[model]._fields.get(field, False) and (
+                isinstance(
+                    self.env[model]._fields[field], odoo_fields.Many2many) and
+                (not self.env[model]._fields[field].compute and
+                 self.env[model_raw]._fields[name].related or
+                 self.env[model]._fields[field].store)) and \
+                         self.env[model]._fields[field] or False
             if field_data:
-                model_m2m, rel1, rel2 = field_data._sql_names(self.env[model])
+                model_m2m = field_data.relation
+                rel2 = field_data.column2
+
                 requete = "UPDATE "+model_m2m+" SET "+\
                           rel2+"="+str(object_id)+" WHERE "+ \
                           ustr(rel2) +" IN " + str(tuple(object_ids)) + ";"
                 self.env.cr.execute(requete)
-        #TODO: Revisar que se me esta quedando vacio
-        #y de ahi el error al hacer la consulta debajo
         unactive_object_ids = model_pool.search([('id', 'in', object_ids),
                                                  ('id', '<>', object_id)])
         context = self.env.context.copy()
         context.update({'origin': 'object_merge'})
         unactive_object_ids.write({'active': False})
         if not self.env.context.get('active_model'):
-            raise orm.except_orm(_(u'¡Error de Usuario!'),
-                                 _(u'No existe un modelo activo, por favor verifique.'))
+            raise ValidationError(_(u'No existe un modelo activo, por favor verifique.'))
         list = []
         for id in unactive_object_ids:
             list.append(self.env.context.get('active_model')+','+str(id.id))
@@ -155,5 +149,5 @@ class ObjectMerger(models.TransientModel):
                     tuple([self.env.context.get('active_model')+','+str(object_id), tuple(list)]))
         return {'type': 'ir.actions.act_window_close'}
 
-    name = fields.Char('Name', size=16)
+    name = odoo_fields.Char('Name', size=16)
 
