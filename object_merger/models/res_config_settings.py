@@ -1,0 +1,144 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import _, api, fields, models, SUPERUSER_ID
+from odoo.exceptions import ValidationError
+import copy
+
+class IrModel(models.Model):
+    _inherit = 'ir.model'
+    
+
+    object_merger_model = \
+        fields.Boolean('Object Merger', help='If checked, '
+                                             'by default the Object Merger '
+                                             'configuration will get this '
+                                             'module in the list')
+
+    
+
+class ResConfigSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+    
+    @api.multi
+    def install(self):
+        '''
+        Initialization of the configuration
+        '''
+        #TODO: garantizar que el read no me traiga ningún comportamiento
+        #TODO : no deseado
+        for vals in self.read(self.ids):
+            result = self.update_field(vals)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+    
+    @api.model
+    def create(self, vals):
+        '''
+        '''
+        vals2 = copy.deepcopy(vals)
+        #TODO : revisar la llamada al super 'object_merger_settings'
+        #result = super(object_merger_settings, self).create(vals2)
+        result = super(ResConfigSettings, self).create(vals2)
+        ## Fields Process ##
+        self.update_field(vals)
+        return result
+    
+    #Es un default, no lleva decoradores
+    def _get_default_object_merger_models(self):
+        return self.env['ir.model'].\
+            search([('object_merger_model', '=', True)])
+    
+    @api.multi
+    def update_field(self, vals):
+        '''
+        '''
+        model_ids = []
+        model_obj = self.env['ir.model']
+        action_obj = self.env['ir.actions.act_window']
+        value_obj = self.env['ir.values']
+        field_obj = self.env['ir.model.fields']
+        ## Process ##
+        if not vals or not vals.get('models_ids', False):
+            return False
+        elif vals.get('models_ids') or model_ids[0][2]:
+            model_ids = vals.get('models_ids')
+            if isinstance(model_ids[0], (list)):
+                model_ids = model_ids[0][2]
+        # Unlink Previous Actions
+        unlink_ids = action_obj.search([
+                        ('res_model' , '=', 'object.merger')
+                    ])
+        for unlink_id in unlink_ids:
+            unlink_id.unlink()
+            un_val_ids = value_obj.search([
+                ('value' , '=',"ir.actions.act_window," + str(unlink_id.id)),
+                ])
+            un_val_ids.unlink()
+        # Put all models which were selected before back to not an object_merger
+        model_not_merge_ids = model_obj.search([
+                    ('id', 'not in', model_ids),
+                    ('object_merger_model', '=', True),
+                ])
+        #Cambio para que funcione correctamente
+        #FIX: si ningun modelo ha sido marcado anteriormente, no es necesario
+        #hacer lo siguiente, agregando condicion
+        if model_not_merge_ids:
+            modx_ids = self.env['ir.model'].browse(model_not_merge_ids)
+            modx_ids.write({'object_merger_model' : False})
+        # Put all models which are selected to be an object_merger
+        mod_ids = self.env['ir.model'].browse(model_ids)
+        mod_ids.write({'object_merger_model' : True})
+        ### Create New Fields ###
+        object_merger_ids = model_obj.search([
+                    ('model', '=', 'object.merger')
+                ])
+        read_datas = model_obj.read(model_ids,
+                                    ['model','name','object_merger_model'])
+        if not read_datas:
+            read_datas = mod_ids
+        for model in read_datas:
+            field_name = 'x_' + model['model'].replace('.','_') + '_id'
+            act_id = action_obj.create({
+                 'name': "%s " % model['name'] + _("Merger"),
+                 'type': 'ir.actions.act_window',
+                 'res_model': 'object.merger',
+                 'src_model': model['model'],
+                 'view_type': 'form',
+                 'context': "{'field_to_read':'%s'}" % field_name,
+                 'view_mode':'form',
+                 'target': 'new',
+            })
+            value_obj.create({
+                 'name': "%s " % model['name'] + _("Merger"),
+                 'model': model['model'],
+                 'key2': 'client_action_multi',
+                 'value': "ir.actions.act_window," + str(act_id.id),
+            })
+            field_name = 'x_' + model['model'].replace('.','_') + '_id'
+            if not field_obj.search([
+                ('name', '=', field_name),
+                ('model', '=', 'object.merger')]):
+                field_data = {
+                    'model': 'object.merger',
+                    'model_id': object_merger_ids.ids and object_merger_ids[
+                        0].id or False,
+                    'name': field_name,
+                    'relation': model['model'],
+                    'field_description': "%s " % model['name'] + _('To keep'),
+                    'state': 'manual',
+                    'ttype': 'many2one',
+                }
+                field_obj.sudo().create(field_data)
+        return True
+
+
+    models_ids = fields.Many2many('ir.model',
+                                      'object_merger_settings_model_rel',
+                                      'object_merger_id', 'model_id',
+                                      'Models',
+                                      domain=[('transient', '=', False)],
+                                      default=_get_default_object_merger_models)
+
