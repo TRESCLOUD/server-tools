@@ -2,8 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, fields as odoo_fields, models, SUPERUSER_ID
-#TODO :Ver con que se sustituyó esto en la
-#TODO: versión 10
 from openerp.tools import ustr
 from odoo.exceptions import ValidationError
 
@@ -58,8 +56,6 @@ class ObjectMerger(models.TransientModel):
         field_to_read = self.env.context.get('field_to_read')
         fields = field_to_read and [field_to_read] or []
 
-        #TODO: Este caso queda por probar, como puedo configurar el
-        #TODO: ecua_fiscal_positions_core
         if self.env.context.get('origin', False) != 'ecua_fiscal_positions_core':
             object = self.read(fields)
             object = object[0]
@@ -67,7 +63,6 @@ class ObjectMerger(models.TransientModel):
             fiscal_position = model_pool.browse(ids[0])
             object.update({'id': self.id, fields[0]: (self.id,
                                                      fiscal_position.name)})
-        #TODO: nos queda por probar!, nunca entra aquí
         if self.env.context.get('to_invoke'):
             object.update({field_to_read: [self.env.context.get(
                 'object_to_preserve_id')]})
@@ -76,13 +71,10 @@ class ObjectMerger(models.TransientModel):
             object_id = object[field_to_read][0]
         else:
             raise ValidationError(_('Please select one value to keep'))
-        # For one2many fields on res.partner
         self.env.cr.execute("SELECT name, model FROM ir_model_fields WHERE "
                     "relation=%s and ttype not in ('many2many', 'one2many');",
                             (active_model, ))
         for name, model_raw in self.env.cr.fetchall():
-            #TODO: todo lo relacionado con fiscal_position y account_position,
-            # ncesitamos explicación
             if name == 'property_account_position' and \
                             model_raw == 'res.partner':
                 for id in object_ids:

@@ -25,8 +25,6 @@ class ResConfigSettings(models.TransientModel):
         '''
         Initialization of the configuration
         '''
-        #TODO: garantizar que el read no me traiga ningún comportamiento
-        #TODO : no deseado
         for vals in self.read(self.ids):
             result = self.update_field(vals)
         return {
@@ -39,8 +37,6 @@ class ResConfigSettings(models.TransientModel):
         '''
         '''
         vals2 = copy.deepcopy(vals)
-        #TODO : revisar la llamada al super 'object_merger_settings'
-        #result = super(object_merger_settings, self).create(vals2)
         result = super(ResConfigSettings, self).create(vals2)
         ## Fields Process ##
         self.update_field(vals)
