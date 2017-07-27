@@ -12,12 +12,11 @@ class ResConfigSettings(res_config_settings):
 
     @api.model
     def fields_view_get(self, view_id=None, view_type='form',
-                        context=None, toolbar=False, submenu=False):
+                        toolbar=False, submenu=False):
 
         ret_val = super(ResConfigSettings, self).fields_view_get(
             view_id=view_id,
             view_type=view_type,
-            context=context,
             toolbar=toolbar,
             submenu=submenu,
         )
