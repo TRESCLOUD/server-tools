@@ -56,16 +56,17 @@ class ObjectMerger(models.TransientModel):
         field_to_read = self.env.context.get('field_to_read')
         fields = field_to_read and [field_to_read] or []
 
-        if self.env.context.get('origin', False) != 'ecua_fiscal_positions_core':
+        if self.env.context.get('origin', False) \
+                != 'ecua_fiscal_positions_core':
             object = self.read(fields)
             object = object[0]
         else:
             fiscal_position = model_pool.browse(ids[0])
             object.update({'id': self.id, fields[0]: (self.id,
                                                      fiscal_position.name)})
-        if self.env.context.get('to_invoke'):
+        if self.env.context.get('to_invoke', False):
             object.update({field_to_read: [self.env.context.get(
-                'object_to_preserve_id')]})
+                'object_to_preserve_id', False)]})
 
         if object and fields and object[field_to_read]:
             object_id = object[field_to_read][0]
