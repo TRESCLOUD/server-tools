@@ -34,13 +34,13 @@
 	</record>
 
 	<menuitem id="menu_object_merger_settings_base"
-			  parent="base.menu_administration"
-			  sequence="35"
-			  string="Object merger"
-	/>
+		name="Object Merger"
+		parent="base.menu_administration"
+		sequence="35"/>
+			  
 	<menuitem id="menu_object_merger_settings"
-			  action="action_object_merger_settings"
-			  parent="menu_object_merger_settings_base"
-			  sequence="36"/>
+		action="action_object_merger_settings"
+		parent="menu_object_merger_settings_base"
+		sequence="36"/>
 
 </odoo>

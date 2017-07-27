@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Object Merger',
+    'name': 'Fusionador de objetos',
     'version': '1.0',
     'category': 'Tools',
     'description': '''       
