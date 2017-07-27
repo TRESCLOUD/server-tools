@@ -5,10 +5,10 @@
 from openerp import api
 from lxml import etree
 from openerp.addons.base.res.res_config import \
-    res_config_settings
+    ResConfigSettings
 
 
-class ResConfigSettings(res_config_settings):
+class ResConfigSettings(ResConfigSettings):
 
     @api.model
     def fields_view_get(self, view_id=None, view_type='form',
