@@ -35,8 +35,6 @@ class ResConfigSettings(models.TransientModel):
         '''
         '''
         vals2 = copy.deepcopy(vals)
-        #TODO : revisar la llamada al super 'object_merger_settings'
-        #result = super(object_merger_settings, self).create(vals2)
         result = super(ResConfigSettings, self).create(vals2)
         self.update_field(vals)
         return result
