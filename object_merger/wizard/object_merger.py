@@ -54,7 +54,7 @@ class ObjectMerger(models.TransientModel):
             object = object[0]
         else:
             fiscal_position = model_pool.browse(fiscal_position_id)
-            object.update({'id': fiscal_position.id, fields[0]: (fiscal_position.id,fiscal_position.name)})
+            object.update({'id': fiscal_position.id, fields[0]: (fiscal_position.id, fiscal_position.name)})
         if self.env.context.get('to_invoke', False):
             object.update({field_to_read: [self.env.context.get(
                 'object_to_preserve_id', False)]})
