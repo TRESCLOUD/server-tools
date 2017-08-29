@@ -33,7 +33,7 @@ class ObjectMerger(models.TransientModel):
         return res
 
     @api.multi
-    def action_merge(self):
+    def action_merge(self, fiscal_position_id):
         ''''
         Merges two or more objects
         '''
@@ -53,9 +53,8 @@ class ObjectMerger(models.TransientModel):
             object = self.read(fields)
             object = object[0]
         else:
-            fiscal_position = model_pool.browse(ids[0])
-            object.update({'id': self.id, fields[0]: (self.id,
-                                                     fiscal_position.name)})
+            fiscal_position = model_pool.browse(fiscal_position_id)
+            object.update({'id': fiscal_position.id, fields[0]: (fiscal_position.id, fiscal_position.name)})
         if self.env.context.get('to_invoke', False):
             object.update({field_to_read: [self.env.context.get(
                 'object_to_preserve_id', False)]})
