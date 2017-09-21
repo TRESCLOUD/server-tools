@@ -10,7 +10,7 @@ from odoo.exceptions import UserError
 class IrModel(models.Model):
     _inherit = 'ir.model'
 
-    avoid_quick_create = fields.Boolean()
+    avoid_quick_create = fields.Boolean(default=True)
 
     @api.multi
     def _patch_quick_create(self):
