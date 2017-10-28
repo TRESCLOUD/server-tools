@@ -33,7 +33,7 @@ class ObjectMerger(models.TransientModel):
         return res
 
     @api.multi
-    def action_merge(self, fiscal_position_id):
+    def action_merge(self):
         ''''
         Merges two or more objects
         '''
@@ -53,7 +53,7 @@ class ObjectMerger(models.TransientModel):
             object = self.read(fields)
             object = object[0]
         else:
-            fiscal_position = model_pool.browse(fiscal_position_id)
+            fiscal_position = model_pool.browse(object_ids[1])
             object.update({'id': fiscal_position.id, fields[0]: (fiscal_position.id, fiscal_position.name)})
         if self.env.context.get('to_invoke', False):
             object.update({field_to_read: [self.env.context.get(
@@ -119,7 +119,11 @@ class ObjectMerger(models.TransientModel):
         unactive_object_ids = model_pool.search([('id', 'in', object_ids),('id', '<>', object_id)])
         context = self.env.context.copy()
         context.update({'origin': 'object_merge'})
-        unactive_object_ids.write({'active': False})
+        for unactive in unactive_object_ids:
+            unactive.write({
+                'active': False,
+                'deprecated': True #Algunos modelos estan usando deprecated, es similar al active
+            })
         if not self.env.context.get('active_model'):
             raise ValidationError(_(u'No existe un modelo activo, por favor verifique.'))
         list = []
