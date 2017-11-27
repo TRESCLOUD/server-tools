@@ -67,6 +67,20 @@ class ObjectMerger(models.TransientModel):
         self.env.cr.execute("SELECT name, model FROM ir_model_fields WHERE "
                             "relation=%s and ttype not in ('many2many', 'one2many');",
                             (active_model,))
+        warning = []
+        for name, model_raw in self.env.cr.fetchall():
+            try:
+                hasattr(self.env[model_raw], '_auto')
+            except:
+                warning.append(model_raw)
+        if warning:
+            list = '\n'.join("'"+ w + "'," for w in warning)
+            raise ValidationError(u'Los siguientes modelos estan huérfanos y deben ser removidos, evalue con un técnico la posibilidad'
+                                  u'de ejecutar la siguiente consulta "DELETE FROM ir_model_fields WHERE model in (%s)".' % list)
+        # For one2many fields on res.partner
+        self.env.cr.execute("SELECT name, model FROM ir_model_fields WHERE "
+                            "relation=%s and ttype not in ('many2many', 'one2many');",
+                            (active_model,))
         for name, model_raw in self.env.cr.fetchall():
             if name == 'property_account_position' and \
                             model_raw == 'res.partner':
