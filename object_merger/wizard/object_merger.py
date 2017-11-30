@@ -64,15 +64,28 @@ class ObjectMerger(models.TransientModel):
         else:
             raise ValidationError(_(u'Por favor, seleccione un valor a mantener.'))
         # For one2many fields on res.partner
+        warning = []
         self.env.cr.execute("SELECT name, model FROM ir_model_fields WHERE "
                             "relation=%s and ttype not in ('many2many', 'one2many');",
                             (active_model,))
-        warning = []
         for name, model_raw in self.env.cr.fetchall():
             try:
                 hasattr(self.env[model_raw], '_auto')
             except:
                 warning.append(model_raw)
+        self.env.cr.execute("select name, model from ir_model_fields where "
+                            "relation=%s and ttype in ('many2many');", (active_model,))
+        for field, model in self.env.cr.fetchall():
+            try:
+                self.env[model]._fields.get(field, False) and (
+                isinstance(
+                    self.env[model]._fields[field], odoo_fields.Many2many) and
+                (not self.env[model]._fields[field].compute and
+                 self.env[model_raw]._fields[name].related or
+                 self.env[model]._fields[field].store)) and \
+                         self.env[model]._fields[field] or False
+            except:
+                warning.append(model)                
         if warning:
             list = '\n'.join("'"+ w + "'," for w in warning)
             raise ValidationError(u'Los siguientes modelos estan huérfanos y deben ser removidos, evalue con un técnico la posibilidad'
