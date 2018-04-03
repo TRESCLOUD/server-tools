@@ -3,7 +3,7 @@
 {
     'name': "Trescloud Anonymizate",
     'version': '1.0',
-    'depends': ['base', 'anonymization'],#me falta agregar el “remove_module_translations”, tengo que descargarlo
+    'depends': ['base', 'anonymization', 'trescloud_reset_translations', 'database_cleanup'],#me falta agregar el “remove_module_translations”, tengo que descargarlo
     'author': "Trescloud, OpenConsulting Cia. Ltda.",
     'category': 'Technical',
     'description': """

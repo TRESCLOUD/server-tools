@@ -36,13 +36,12 @@ class TrescloudAnonymizationWizard(models.Model):
             self.env.cr.execute("DELETE FROM public.hr_applicant")
 
         #Eecutando funcion de database_cleanup
-        #TODO
+        #Segun la indicacion solo lo hago a los campos
+        purge_colums_wizard = self.env['cleanup.purge.wizard.column'].create({})
+        purge_colums_wizard.purge_all()
 
         #Removiendo adjuntos
         self.env.cr.execute("DELETE FROM public.ir_attachment")
-
-        #Anonimizando otros datos
-        #TODO
 
 
     #Columns
