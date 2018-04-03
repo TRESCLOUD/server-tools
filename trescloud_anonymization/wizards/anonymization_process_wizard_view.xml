@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="trescloud_anonymization_wizard">
+            <field name="name">trescloud.anonymization.wizard.form</field>
+            <field name="model">trescloud.anonymization.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <p>
+                            WARNING. When you choose "Anonymizate" the system will clear the following data:
+                        </p>
+                    </group>
+                    <group>
+                        <ul>
+                            <li>Remove system translations (depends on the mode choosed)</li>
+                            <li>Remove emails data</li>
+                            <li>Remove data from HHRR process derived from Contracts procedures</li>
+                            <li>Remove attachments</li>
+                        </ul>
+                    </group>
+                    <group>
+                        <field name="translation_mode"/>
+                    </group>
+                    <footer>
+                        <button type="object" name="do_anonymizate" string="Anonymizate"
+                                class="oe_highlight"/>
+                        o
+                        <button special="cancel" string="Cancelar" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="trescloud_anonymization_wizard_action">
+            <field name="name">Anonymizate Trescloud</field>
+            <field name="res_model">trescloud.anonymization.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_trescloud_anonymization_wizard_action"
+                  name="Anonymizate Trescloud"
+                  action="trescloud_anonymization_wizard_action"
+                  parent="anonymization.menu_administration_anonymization"
+                  sequence="50" />
+
+    </data>
+</openerp>
