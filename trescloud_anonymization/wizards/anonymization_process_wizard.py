@@ -23,7 +23,10 @@ class TrescloudAnonymizationWizard(models.Model):
         '''
         self.ensure_one()
         #Remover traducciones
-        #TODO
+        translator_reset = self.env['reset.translations.wizard'].create({})
+        translator_reset.with_context({
+            'mode': self.translation_mode,
+        }).do_reset_translations()
 
         #Remover datos email
         self.env.cr.execute("DELETE FROM public.mail_message")
@@ -31,7 +34,7 @@ class TrescloudAnonymizationWizard(models.Model):
 
         #Remover datos de hr_applicant
         #Buscamos si esta instalado hr_recruitment
-        module = self.env['ir.module.module'].search([('name', '=', 'hr_recruitment),')])
+        module = self.env['ir.module.module'].search([('name', '=', 'hr_recruitment')])
         if module:
             self.env.cr.execute("DELETE FROM public.hr_applicant")
 
@@ -42,7 +45,6 @@ class TrescloudAnonymizationWizard(models.Model):
 
         #Removiendo adjuntos
         self.env.cr.execute("DELETE FROM public.ir_attachment")
-
 
     #Columns
     translation_mode = fields.Selection([('all', 'All'),
