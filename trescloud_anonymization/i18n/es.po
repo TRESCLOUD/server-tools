@@ -29,7 +29,7 @@ msgstr "Anonimizar"
 #: model:ir.actions.act_window,name:trescloud_anonymization.trescloud_anonymization_wizard_action
 #: model:ir.ui.menu,name:trescloud_anonymization.menu_trescloud_anonymization_wizard_action
 msgid "Anonymizate Trescloud"
-msgstr "Anonimizacion Trescloud"
+msgstr "Anonimización Trescloud"
 
 #. module: trescloud_anonymization
 #: model:ir.ui.view,arch_db:trescloud_anonymization.trescloud_anonymization_wizard
@@ -79,7 +79,7 @@ msgstr "Remover adjuntos"
 #. module: trescloud_anonymization
 #: model:ir.ui.view,arch_db:trescloud_anonymization.trescloud_anonymization_wizard
 msgid "Remove data from HHRR process derived from Contracts procedures"
-msgstr "Remover datos de Recursos Humanos provenientes de los procedimientos de Contratacion"
+msgstr "Remover datos de Recursos Humanos provenientes de los procedimientos de Contratación"
 
 #. module: trescloud_anonymization
 #: model:ir.ui.view,arch_db:trescloud_anonymization.trescloud_anonymization_wizard
@@ -94,7 +94,7 @@ msgstr "Remover traducciones del sistema (depende del modo seleccionado)"
 #. module: trescloud_anonymization
 #: model:ir.model.fields,field_description:trescloud_anonymization.field_trescloud_anonymization_wizard_translation_mode
 msgid "Translation anonymization mode"
-msgstr "Modo de anonimizacion de traducciones"
+msgstr "Modo de anonimización de traducciones"
 
 #. module: trescloud_anonymization
 #: selection:trescloud.anonymization.wizard,translation_mode:0
@@ -104,7 +104,7 @@ msgstr "Traducciones de usuarios"
 #. module: trescloud_anonymization
 #: model:ir.ui.view,arch_db:trescloud_anonymization.trescloud_anonymization_wizard
 msgid "WARNING. When you choose \"Anonymizate\" the system will clear the following data:"
-msgstr "ADVERTENCIA: Cuando se seleccione \"Anonimizar\" el sistema realizara las siguientes operaciones:"
+msgstr "ADVERTENCIA: Cuando se seleccione \"Anonimizar\" el sistema realizará las siguientes operaciones:"
 
 #. module: trescloud_anonymization
 #: model:ir.model,name:trescloud_anonymization.model_trescloud_anonymization_wizard

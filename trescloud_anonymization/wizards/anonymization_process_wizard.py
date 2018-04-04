@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp import models, fields, api
 from odoo.exceptions import UserError, ValidationError
@@ -34,7 +35,8 @@ class TrescloudAnonymizationWizard(models.Model):
 
         #Remover datos de hr_applicant
         #Buscamos si esta instalado hr_recruitment
-        module = self.env['ir.module.module'].search([('name', '=', 'hr_recruitment')])
+        module = self.env['ir.module.module'].search([('name', '=', 'hr_recruitment'),
+                                                      ('state', '=', 'installed')])
         if module:
             self.env.cr.execute("DELETE FROM public.hr_applicant")
 
