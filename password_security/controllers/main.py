@@ -34,17 +34,15 @@ class PasswordSecurityHome(AuthSignupHome):
 
     @http.route()
     def web_login(self, *args, **kw):
-        """
-        Modificado por Trescloud para evitar el error en la pantalla de inicio
-        cuando no se inserta correctamente el password. Para solucionar el
-        problema necesitamos guardar el uid del request antes de que
-        la llamada el 'request.session.authenticate' lo cambie, en caso de
-        ser None lo restauramos.
-        """
         ensure_db()
         response = super(PasswordSecurityHome, self).web_login(*args, **kw)
         if not request.httprequest.method == 'POST':
             return response
+        # Modificado por Trescloud para evitar el error en la pantalla de
+        # inicio cuando no se inserta correctamente el password. Para
+        # solucionar el problema necesitamos guardar el uid del request
+        # antes de que la llamada el 'request.session.authenticate'
+        # lo cambie, en caso de ser None lo restauramos.
         # Se guarda el uid del request
         old_uid = request.uid
         uid = request.session.authenticate(
