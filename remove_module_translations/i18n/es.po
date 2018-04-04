@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* trescloud_reset_translations
+#	* remove_module_translations
 #
 msgid ""
 msgstr ""
@@ -15,78 +15,78 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: trescloud_reset_translations
-#: model:ir.ui.view,arch_db:trescloud_reset_translations.reset_translations_wizard
+#. module: remove_module_translations
+#: model:ir.ui.view,arch_db:remove_module_translations.reset_translations_wizard
 msgid "Cancelar"
 msgstr "Cancelar"
 
-#. module: trescloud_reset_translations
-#: model:ir.model.fields,field_description:trescloud_reset_translations.field_reset_translations_wizard_create_uid
+#. module: remove_module_translations
+#: model:ir.model.fields,field_description:remove_module_translations.field_reset_translations_wizard_create_uid
 msgid "Created by"
 msgstr "Creado por"
 
-#. module: trescloud_reset_translations
-#: model:ir.model.fields,field_description:trescloud_reset_translations.field_reset_translations_wizard_create_date
+#. module: remove_module_translations
+#: model:ir.model.fields,field_description:remove_module_translations.field_reset_translations_wizard_create_date
 msgid "Created on"
 msgstr "Creado en"
 
-#. module: trescloud_reset_translations
-#: model:ir.model.fields,field_description:trescloud_reset_translations.field_reset_translations_wizard_display_name
+#. module: remove_module_translations
+#: model:ir.model.fields,field_description:remove_module_translations.field_reset_translations_wizard_display_name
 msgid "Display Name"
 msgstr "Nombre a mostrar"
 
-#. module: trescloud_reset_translations
-#: model:ir.model.fields,field_description:trescloud_reset_translations.field_reset_translations_wizard_id
+#. module: remove_module_translations
+#: model:ir.model.fields,field_description:remove_module_translations.field_reset_translations_wizard_id
 msgid "ID"
 msgstr "ID (identificación)"
 
-#. module: trescloud_reset_translations
-#: model:ir.model.fields,field_description:trescloud_reset_translations.field_reset_translations_wizard___last_update
+#. module: remove_module_translations
+#: model:ir.model.fields,field_description:remove_module_translations.field_reset_translations_wizard___last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
-#. module: trescloud_reset_translations
-#: model:ir.model.fields,field_description:trescloud_reset_translations.field_reset_translations_wizard_write_uid
+#. module: remove_module_translations
+#: model:ir.model.fields,field_description:remove_module_translations.field_reset_translations_wizard_write_uid
 msgid "Last Updated by"
 msgstr "Última actualización de"
 
-#. module: trescloud_reset_translations
-#: model:ir.model.fields,field_description:trescloud_reset_translations.field_reset_translations_wizard_write_date
+#. module: remove_module_translations
+#: model:ir.model.fields,field_description:remove_module_translations.field_reset_translations_wizard_write_date
 msgid "Last Updated on"
 msgstr "Última actualización en"
 
-#. module: trescloud_reset_translations
-#: model:ir.ui.view,arch_db:trescloud_reset_translations.reset_translations_wizard
+#. module: remove_module_translations
+#: model:ir.ui.view,arch_db:remove_module_translations.reset_translations_wizard
 msgid "Remove labels translations"
 msgstr "Remover traducciones de etiquetas"
 
-#. module: trescloud_reset_translations
-#: model:ir.ui.view,arch_db:trescloud_reset_translations.reset_translations_wizard
+#. module: remove_module_translations
+#: model:ir.ui.view,arch_db:remove_module_translations.reset_translations_wizard
 msgid "Remove menus translations"
 msgstr "Remover traducciones de menus"
 
-#. module: trescloud_reset_translations
-#: model:ir.ui.view,arch_db:trescloud_reset_translations.reset_translations_wizard
+#. module: remove_module_translations
+#: model:ir.ui.view,arch_db:remove_module_translations.reset_translations_wizard
 msgid "Remove views translations"
 msgstr "Remover traducciones de vista"
 
-#. module: trescloud_reset_translations
-#: model:ir.ui.view,arch_db:trescloud_reset_translations.reset_translations_wizard
+#. module: remove_module_translations
+#: model:ir.ui.view,arch_db:remove_module_translations.reset_translations_wizard
 msgid "Reset"
 msgstr "Restablecer"
 
-#. module: trescloud_reset_translations
-#: model:ir.actions.act_window,name:trescloud_reset_translations.reset_translations_wizard_action
-#: model:ir.ui.menu,name:trescloud_reset_translations.menu_reset_translations_wizard_action
+#. module: remove_module_translations
+#: model:ir.actions.act_window,name:remove_module_translations.reset_translations_wizard_action
+#: model:ir.ui.menu,name:remove_module_translations.menu_reset_translations_wizard_action
 msgid "Reset translations"
 msgstr "Resetear traducciones"
 
-#. module: trescloud_reset_translations
-#: model:ir.ui.view,arch_db:trescloud_reset_translations.reset_translations_wizard
+#. module: remove_module_translations
+#: model:ir.ui.view,arch_db:remove_module_translations.reset_translations_wizard
 msgid "WARNING. When you choose \"Reset\" the system will clear the following data:"
-msgstr "ADVERTENCIA. Al seleccionar \"Resetear\" el sistema limpiara los siguientes datos:"
+msgstr "ADVERTENCIA. Al seleccionar \"Resetear\" el sistema limpiará los siguientes datos:"
 
-#. module: trescloud_reset_translations
-#: model:ir.model,name:trescloud_reset_translations.model_reset_translations_wizard
+#. module: remove_module_translations
+#: model:ir.model,name:remove_module_translations.model_reset_translations_wizard
 msgid "reset.translations.wizard"
 msgstr "reset.translations.wizard"
