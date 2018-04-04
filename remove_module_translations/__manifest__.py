@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': "Trescloud Reset Translations",
+    'name': "Trescloud Remove Translations",
     'version': '1.0',
     'depends': ['base'],
     'author': "Trescloud, OpenConsulting Cia. Ltda.",
