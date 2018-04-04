@@ -3,15 +3,15 @@
 # * auto_backup
 # 
 # Translators:
-# OCA Transbot <transbot@odoo-community.org>, 2016
 # Bole <bole@dajmi5.com>, 2017
+# OCA Transbot <transbot@odoo-community.org>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-01 14:58+0000\n"
-"PO-Revision-Date: 2017-06-01 14:58+0000\n"
-"Last-Translator: Bole <bole@dajmi5.com>, 2017\n"
+"POT-Creation-Date: 2018-03-02 18:39+0000\n"
+"PO-Revision-Date: 2018-03-02 18:39+0000\n"
+"Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2017\n"
 "Language-Team: Croatian (https://www.transifex.com/oca/teams/23907/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,6 +61,8 @@ msgid ""
 "Backups older than this will be deleted automatically. Set 0 to disable "
 "autodeletion."
 msgstr ""
+"Arhive starije od navedenog će biti automatski obrisane. Postavite na 0 za "
+"gašenje automatike brisanja."
 
 #. module: auto_backup
 #: model:ir.ui.view,arch_db:auto_backup.view_backup_conf_form
@@ -103,7 +105,7 @@ msgstr "Kreirao"
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup_create_date
 msgid "Created on"
-msgstr "Kreirano "
+msgstr "Kreirano"
 
 #. module: auto_backup
 #: code:addons/auto_backup/models/db_backup.py:208
@@ -127,7 +129,7 @@ msgstr "Čuvati dana"
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup_display_name
 msgid "Display Name"
-msgstr "Prikaži naziv"
+msgstr "Naziv "
 
 #. module: auto_backup
 #: code:addons/auto_backup/models/db_backup.py:119
@@ -151,7 +153,7 @@ msgstr "Folder"
 #. module: auto_backup
 #: model:ir.ui.view,arch_db:auto_backup.view_backup_conf_form
 msgid "Go to Settings / Technical / Automation / Scheduled Actions."
-msgstr ""
+msgstr "Idite na Postavke / Tehnički / Automatizacija / Zakazane radnje."
 
 #. module: auto_backup
 #: model:ir.ui.view,arch_db:auto_backup.view_backup_conf_form
@@ -171,17 +173,17 @@ msgstr "ID"
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup___last_update
 msgid "Last Modified on"
-msgstr "Zadnja izmjena na"
+msgstr "Zadnje modificirano"
 
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup_write_uid
 msgid "Last Updated by"
-msgstr "Zadnje ažuriranje izvršio"
+msgstr "Zadnji ažurirao"
 
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup_write_date
 msgid "Last Updated on"
-msgstr "Zadnje ažuriranje na"
+msgstr "Zadnje ažuriranje"
 
 #. module: auto_backup
 #: selection:db.backup,method:0
@@ -196,7 +198,7 @@ msgstr "Metoda"
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup_name
 msgid "Name"
-msgstr "Ime"
+msgstr "Naziv"
 
 #. module: auto_backup
 #: model:ir.model.fields,help:auto_backup.field_db_backup_sftp_private_key
@@ -255,12 +257,12 @@ msgstr ""
 #. module: auto_backup
 #: model:ir.model.fields,help:auto_backup.field_db_backup_name
 msgid "Summary of this backup process"
-msgstr ""
+msgstr "Sažetak ovog procesa arhiviranja"
 
 #. module: auto_backup
 #: model:ir.ui.view,arch_db:auto_backup.view_backup_conf_form
 msgid "Test SFTP Connection"
-msgstr ""
+msgstr "Test SFTP veze"
 
 #. module: auto_backup
 #: model:ir.model.fields,help:auto_backup.field_db_backup_sftp_host
@@ -302,12 +304,12 @@ msgstr ""
 #. module: auto_backup
 #: model:ir.ui.view,arch_db:auto_backup.view_backup_conf_form
 msgid "Warning:"
-msgstr ""
+msgstr "Upozorenje:"
 
 #. module: auto_backup
 #: model:ir.model,name:auto_backup.model_db_backup
 msgid "db.backup"
-msgstr ""
+msgstr "db.backup"
 
 #. module: auto_backup
 #: model:ir.ui.view,arch_db:auto_backup.view_backup_conf_form
@@ -317,4 +319,4 @@ msgstr ""
 #. module: auto_backup
 #: model:ir.ui.view,arch_db:auto_backup.view_backup_conf_form
 msgid "sftp.example.com"
-msgstr ""
+msgstr "sftp.example.com"

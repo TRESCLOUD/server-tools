@@ -13,6 +13,20 @@ class TestResUsers(TransactionCase):
 
     def setUp(self):
         super(TestResUsers, self).setUp()
+        self.main_comp = self.env.ref('base.main_company')
+        # Modify users as privileged, but non-root user
+        privileged_user = self.env['res.users'].create({
+            'name': 'Privileged User',
+            'login': 'privileged_user@example.com',
+            'company_id': self.main_comp.id,
+            'groups_id': [
+                (4, self.env.ref('base.group_erp_manager').id),
+                (4, self.env.ref('base.group_partner_manager').id),
+                (4, self.env.ref('base.group_user').id),
+            ],
+        })
+        privileged_user.email = privileged_user.login
+        self.env = self.env(user=privileged_user)
         self.login = 'foslabs@example.com'
         self.partner_vals = {
             'name': 'Partner',
@@ -20,7 +34,6 @@ class TestResUsers(TransactionCase):
             'email': self.login,
         }
         self.password = 'asdQWE123$%^'
-        self.main_comp = self.env.ref('base.main_company')
         self.vals = {
             'name': 'User',
             'login': self.login,
@@ -68,14 +81,14 @@ class TestResUsers(TransactionCase):
     def test_check_password_returns_true_for_valid_password(self):
         rec_id = self._new_record()
         self.assertTrue(
-            rec_id.check_password('asdQWE123$%^3'),
+            rec_id._check_password('asdQWE123$%^3'),
             'Password is valid but check failed.',
         )
 
     def test_check_password_raises_error_for_invalid_password(self):
         rec_id = self._new_record()
         with self.assertRaises(PassError):
-            rec_id.check_password('password')
+            rec_id._check_password('password')
 
     def test_save_password_crypt(self):
         rec_id = self._new_record()
@@ -146,3 +159,8 @@ class TestResUsers(TransactionCase):
         self.assertEqual(
             True, rec_id._validate_pass_reset(),
         )
+
+    def test_underscore_is_special_character(self):
+        self.assertTrue(self.main_comp.password_special)
+        rec_id = self._new_record()
+        rec_id._check_password('asdQWE12345_3')

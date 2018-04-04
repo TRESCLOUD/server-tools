@@ -20,7 +20,7 @@ class PasswordSecuritySession(Session):
             dict(map(operator.itemgetter('name', 'value'), fields))
         )
         user_id = request.env.user
-        user_id.check_password(new_password)
+        user_id._check_password(new_password)
         return super(PasswordSecuritySession, self).change_password(fields)
 
 
@@ -29,14 +29,15 @@ class PasswordSecurityHome(AuthSignupHome):
     def do_signup(self, qcontext):
         password = qcontext.get('password')
         user_id = request.env.user
-        user_id.check_password(password)
+        user_id._check_password(password)
         return super(PasswordSecurityHome, self).do_signup(qcontext)
 
     @http.route()
     def web_login(self, *args, **kw):
         ensure_db()
         response = super(PasswordSecurityHome, self).web_login(*args, **kw)
-        if not request.httprequest.method == 'POST':
+        login_success = request.params.get('login_success', False)
+        if not request.httprequest.method == 'POST' or not login_success:
             return response
         uid = request.session.authenticate(
             request.session.db,
@@ -50,6 +51,7 @@ class PasswordSecurityHome(AuthSignupHome):
         if not user_id._password_has_expired():
             return response
         user_id.action_expire_password()
+        request.session.logout(keep_db=True)
         redirect = user_id.partner_id.signup_url
         return http.redirect_with_hash(redirect)
 
