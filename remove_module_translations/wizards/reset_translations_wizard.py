@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# Copyright 2018 TRESCLOUD Cia Ltda.
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html
 
 from openerp import models, fields, api
 from odoo.exceptions import UserError, ValidationError
