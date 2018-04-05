@@ -13,12 +13,10 @@ def update_date_write_password(env):
     UPDATE 
        res_users set password_write_date = now() 
     where 
-      password_write_date is null
-      and active = True;
+      active = True;
     '''
     env.cr.execute(query)
         
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
-    update_date_write_password(env)
-        
+    update_date_write_password(env)        
