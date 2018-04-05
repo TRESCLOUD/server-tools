@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright 2016 ACSONE SA/NA (<http://acsone.eu>)
-# Copyright 2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
-# Copyright 2018 Simone Rubino - Agile Business Group
+# © 2013 Agile Business Group sagl (<http://www.agilebg.com>)
+# © 2016 ACSONE SA/NA (<http://acsone.eu>)
+# © 2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
@@ -15,24 +15,21 @@ class IrModel(models.Model):
     @api.multi
     def _patch_quick_create(self):
 
+        @api.multi
         def _wrap_name_create():
-            @api.model
-            def wrapper(self, name):
-                raise UserError(_(
-                    "Can't create %s with name %s quickly.\n"
-                    "Please contact your system administrator to disable "
-                    "this behaviour.") % (self._name, name))
+            def wrapper(self):
+                raise UserError(_("Can't create quickly. Opening create form"))
             return wrapper
 
-        method_name = 'name_create'
         for model in self:
-            model_obj = self.env.get(model.model)
             if model.avoid_quick_create:
-                model_obj._patch_method(method_name, _wrap_name_create())
-            else:
-                method = getattr(model_obj, method_name, None)
-                if method and hasattr(method, 'origin'):
-                    model_obj._revert_method(method_name)
+                model_name = model.model
+                model_obj = self.env.get(model_name)
+                if (
+                        not isinstance(model_obj, type(None)) and
+                        not hasattr(model_obj, 'check_quick_create')):
+                    model_obj._patch_method('name_create', _wrap_name_create())
+                    model_obj.check_quick_create = True
         return True
 
     def _register_hook(self):
