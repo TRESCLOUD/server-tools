@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="reset_translations_wizard">
+            <field name="name">reset.translations.wizard.form</field>
+            <field name="model">reset.translations.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <p>
+                            WARNING. When you choose "Reset" the system will clear the following data:
+                        </p>
+                    </group>
+                    <group>
+                        <ul>
+                            <li>Remove menus translations</li>
+                            <li>Remove views translations</li>
+                            <li>Remove labels translations</li>
+                        </ul>
+                    </group>
+                    <group>
+                    </group>
+                    <footer>
+                        <button type="object" name="do_reset_translations" string="Reset"
+                                class="oe_highlight"/>
+                        o
+                        <button special="cancel" string="Cancelar" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="reset_translations_wizard_action">
+            <field name="name">Reset translations</field>
+            <field name="res_model">reset.translations.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_reset_translations_wizard_action"
+                  name="Reset translations"
+                  action="reset_translations_wizard_action"
+                  parent="base.menu_translation"
+                  sequence="10" />
+
+    </data>
+</openerp>
