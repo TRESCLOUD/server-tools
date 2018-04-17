@@ -33,17 +33,13 @@ class ResetTranslationsWizard(models.Model):
                 [('translate', '=', True)])
             avoid_delete_translations_domain = []
 
-            # help_query = '''SELECT it.id
-            # FROM public.ir_translation it
-            # where it.res_id > 0 and it.name = '%s';'''
-
             for t_field in translatable_fields:
+                #Añadimos el nombre de los campos traducibles a una lista para
+                #realizar la comparacion
                 t_name = '%s,%s' % (t_field.model_id.model, t_field.name)
-                # self.env.cr.execute(help_query, (t_name,))
-                # avoid_delete_translations.extend([record[0] for record in
-                #                                   self.env.cr.fetchall()])
-                avoid_delete_translations_domain.append(t_name)
 
+                avoid_delete_translations_domain.append(t_name)
+            #Buscamos los terminos que no esten en la lista de valores
             translations = translation_obj.search(
                 [('name', 'not in', avoid_delete_translations_domain)]
             )
