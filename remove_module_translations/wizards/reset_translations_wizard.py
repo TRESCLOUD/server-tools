@@ -20,37 +20,59 @@ class ResetTranslationsWizard(models.Model):
          de borrado de las traducciones
         """
         self.ensure_one()
-        #Buscando las traduciones en dependencia del modo
-        #o la ausencia del mismo
-        translation_obj = self.env['ir.translation']
-        if self.env.context.get('mode', False) and \
-                self.env.context['mode'] == 'all':
-            translations = translation_obj.search([])
-        else:
-            ir_model_fields_obj = self.env['ir.model.fields']
-            # Se buscan los campos traducibles
-            translatable_fields = ir_model_fields_obj.search(
-                [('translate', '=', True)])
-            avoid_delete_translations_domain = []
-
-            for t_field in translatable_fields:
-                #Añadimos el nombre de los campos traducibles a una lista para
-                #realizar la comparacion
-                t_name = '%s,%s' % (t_field.model_id.model, t_field.name)
-
-                avoid_delete_translations_domain.append(t_name)
-            #Buscamos los terminos que no esten en la lista de valores
-            translations = translation_obj.search(
-                [('name', 'not in', avoid_delete_translations_domain)]
-            )
-
-        #Borrando las trauducciones
-        if translations:
+        if self.env.context.get('mode', False) and self.env.context.get('mode') == 'all':
+            #caso excepcional, forzamos el borrado de TODAS Las traducciones
+            #para apoyar el proceso de anonimizar la base de datos
+            delete_translations_domain = []
+            translations = self.env['ir.translation'].search([])
             translations.unlink()
-            #Guardando mensaje en el log
-            mssg = u'Traduciones borradas por usuario %s, a fecha %s' % (
-                self.env.user.name, datetime.today())
-            _logger.info(mssg)
-
-
-
+            return
+        #Borramos explicitamente terminos que se reinstalarán la siguiente vez
+        #por ejemplo los menus, los formularios
+        models_fields_to_delete = [
+            ('ir.actions.act_url','name'),
+            ('ir.actions.act_url','help'),
+            ('ir.actions.act_window','help'),
+            ('ir.actions.act_window','name'),
+            ('ir.actions.act_window_close','help'),
+            ('ir.actions.actions','help'),
+            ('ir.actions.client','help'),
+            ('ir.actions.client','name'),
+            ('ir.actions.report.xml','help'),
+            ('ir.actions.report.xml','name'),
+            ('ir.actions.server','help'),
+            ('ir.actions.server','name'),
+            ('ir.actions.server','body_html'),
+            ('ir.actions.server','subject'),
+            ('ir.actions.todo','note'),
+            ('ir.filters','name'),
+            ('ir.model','name'),
+            ('ir.model.fields','help'),
+            ('ir.model.fields','field_description'),
+            ('ir.module.category','description'),
+            ('ir.module.category','name'),
+            ('ir.module.module','description'),
+            ('ir.module.module','summary'),
+            ('ir.module.module','shortdesc'),
+            ('ir.ui.menu','name'),
+            ('ir.ui.view','website_meta_title'),
+            ('ir.ui.view','website_meta_description'),
+            ('ir.ui.view','website_meta_keywords'),
+            ('ir.ui.view','arch_db'),
+            ('ir.ui.view.security','name'),
+            ]
+        for model, field in models_fields_to_delete:
+            #excluimos la data creada por el usuario *ejemplo una traduccion de un menu creado a mano 
+            non_user_ir_model_data = self.env['ir.model.data'].search([
+                ('model','=',model),
+                ('module','not in',['__export__',False]), #los datos exportados por el usuario tienen como modulo __export__
+                ])
+            non_user_user_res_ids = non_user_ir_model_data.mapped('res_id')
+            translations = self.env['ir.translation'].search([
+                ('name', '=', ",".join((model,field))),
+                ('res_id', 'in', non_user_user_res_ids)
+                ])
+            translations.unlink()
+        mssg = u'Traduciones borradas por usuario %s, a fecha %s' % (self.env.user.name, datetime.today())
+        _logger.info(mssg)
+        

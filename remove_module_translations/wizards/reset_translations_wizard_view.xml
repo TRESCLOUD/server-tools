@@ -19,11 +19,43 @@
                         </ul>
                     </group>
                     <group>
+                    	<p>
+                    	El sistema lo logra removiendo las traducciones de las siguientes tablas
+						'ir.actions.act_url,name'<br></br>
+						'ir.actions.act_url,help'<br></br>
+						'ir.actions.act_window,help'<br></br>
+						'ir.actions.act_window,name'<br></br>
+						'ir.actions.act_window_close,help'<br></br>
+						'ir.actions.actions,help'<br></br>
+						'ir.actions.client,help'<br></br>
+						'ir.actions.client,name'<br></br>
+						'ir.actions.report.xml,help'<br></br>
+						'ir.actions.report.xml,name'<br></br>
+						'ir.actions.server,help'<br></br>
+						'ir.actions.server,name'<br></br>
+						'ir.actions.server,body_html'<br></br>
+						'ir.actions.server,subject'<br></br>
+						'ir.actions.todo,note'<br></br>
+						'ir.filters,name'<br></br>
+						'ir.model,name'<br></br>
+						'ir.model.fields,help'<br></br>
+						'ir.model.fields,field_description'<br></br>
+						'ir.module.category,description'<br></br>
+						'ir.module.category,name'<br></br>
+						'ir.module.module,description'<br></br>
+						'ir.module.module,summary'<br></br>
+						'ir.module.module,shortdesc'<br></br>
+						'ir.ui.menu,name'<br></br>
+						'ir.ui.view,website_meta_title'<br></br>
+						'ir.ui.view,website_meta_description'<br></br>
+						'ir.ui.view,website_meta_keywords'<br></br>
+						'ir.ui.view,arch_db'<br></br>
+						'ir.ui.view.security,name'<br></br>
+						</p>
                     </group>
                     <footer>
                         <button type="object" name="do_reset_translations" string="Reset"
                                 class="oe_highlight"/>
-                        o
                         <button special="cancel" string="Cancelar" class="oe_link"/>
                     </footer>
                 </form>
