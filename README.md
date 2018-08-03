@@ -20,12 +20,13 @@ addon | version | summary
 --- | --- | ---
 [attachment_base_synchronize](attachment_base_synchronize/) | 10.0.1.0.0 | Attachment Base Synchronize
 [auditlog](auditlog/) | 10.0.1.0.0 | Audit Log
-[auth_admin_passkey](auth_admin_passkey/) | 10.0.1.0.0 | Authentification - Admin Passkey
-[auth_brute_force](auth_brute_force/) | 10.0.1.0.0 | Tracks Authentication Attempts and Prevents Brute-force Attacks module
-[auth_session_timeout](auth_session_timeout/) | 10.0.1.0.1 | This module disable all inactive sessions since a given delay
-[auth_signup_verify_email](auth_signup_verify_email/) | 10.0.1.0.0 | Force uninvited users to use a good email for signup
+[auth_admin_passkey](auth_admin_passkey/) | 10.0.1.0.1 | Authentification - Admin Passkey
+[auth_brute_force](auth_brute_force/) | 10.0.2.2.0 | Track Authentication Attempts and Prevent Brute-force Attacks
+[auth_oauth_multi_token](auth_oauth_multi_token/) | 10.0.1.0.0 | Allow multiple connection with the same OAuth account
+[auth_session_timeout](auth_session_timeout/) | 10.0.1.0.2 | This module disable all inactive sessions since a given delay
+[auth_signup_verify_email](auth_signup_verify_email/) | 10.0.2.0.0 | Force uninvited users to use a good email for signup
 [auth_supplier](auth_supplier/) | 10.0.1.0.0 | Auth Supplier
-[auth_totp](auth_totp/) | 10.0.1.0.1 | Allows users to enable MFA and add optional trusted devices
+[auth_totp](auth_totp/) | 10.0.2.0.0 | Allows users to enable MFA and add optional trusted devices
 [auth_totp_password_security](auth_totp_password_security/) | 10.0.1.0.0 | auth_totp and password_security compatibility
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 10.0.1.0.0 | Makes the user login field case insensitive
 [auto_backup](auto_backup/) | 10.0.1.0.2 | Backups database
@@ -56,8 +57,9 @@ addon | version | summary
 [base_suspend_security](base_suspend_security/) | 10.0.1.0.0 | Suspend security checks for a call
 [base_technical_features](base_technical_features/) | 10.0.1.0.0 | Access to technical features without activating debug mode
 [base_technical_user](base_technical_user/) | 10.0.1.0.0 | Add a technical user parameter on the company
+[base_tier_validation](base_tier_validation/) | 10.0.1.0.1 | Implement a validation process based on tiers.
 [base_user_gravatar](base_user_gravatar/) | 10.0.1.0.1 | Synchronize Gravatar Image
-[base_user_role](base_user_role/) | 10.0.1.0.1 | User roles
+[base_user_role](base_user_role/) | 10.0.1.0.2 | User roles
 [base_view_inheritance_extension](base_view_inheritance_extension/) | 10.0.1.0.1 | Adds more operators for view inheritance
 [configuration_helper](configuration_helper/) | 10.0.1.0.0 | Configuration Helper
 [database_cleanup](database_cleanup/) | 10.0.1.0.0 | Database cleanup
@@ -69,15 +71,16 @@ addon | version | summary
 [fetchmail_notify_error_to_sender](fetchmail_notify_error_to_sender/) | 10.0.1.0.0 | If fetching mails gives error, send an email to sender
 [html_image_url_extractor](html_image_url_extractor/) | 10.0.1.0.0 | Extract images found in any HTML field
 [html_text](html_text/) | 10.0.1.0.0 | Generate excerpts from any HTML field
-[keychain](keychain/) | 10.0.2.0.0 | Store accounts and credentials
+[keychain](keychain/) | 10.0.2.0.1 | Store accounts and credentials
 [letsencrypt](letsencrypt/) | 10.0.1.0.0 | Request SSL certificates from letsencrypt.org
 [mail_environment](mail_environment/) | 10.0.1.0.0 | Configure mail servers with server_environment_files
+[mail_log_message_to_process](mail_log_message_to_process/) | 10.0.1.0.0 | Log all messages received, before they start to be processed.
 [mass_editing](mass_editing/) | 10.0.1.1.0 | Mass Editing
 [mass_sorting](mass_sorting/) | 10.0.1.0.0 | Sort any models by any fields list
-[module_auto_update](module_auto_update/) | 10.0.2.0.1 | Automatically update Odoo modules
+[module_auto_update](module_auto_update/) | 10.0.2.0.3 | Automatically update Odoo modules
 [module_prototyper](module_prototyper/) | 10.0.1.0.0 | Prototype your module.
 [onchange_helper](onchange_helper/) | 10.0.1.0.0 | Technical module that ease execution of onchange in Python code
-[password_security](password_security/) | 10.0.1.1.3 | Allow admin to set password security requirements.
+[password_security](password_security/) | 10.0.1.1.4 | Allow admin to set password security requirements.
 [res_config_settings_enterprise_remove](res_config_settings_enterprise_remove/) | 10.0.1.0.0 | Remove fields in all settings views marked as enterprise
 [scheduler_error_mailer](scheduler_error_mailer/) | 10.0.1.0.0 | Scheduler Error Mailer
 [sentry](sentry/) | 10.0.1.0.1 | Report Odoo errors to Sentry
@@ -85,11 +88,13 @@ addon | version | summary
 [server_environment](server_environment/) | 10.0.1.2.0 | move some configurations out of the database
 [server_environment_files_sample](server_environment_files_sample/) | 10.0.1.0.0 | sample config file for server_environment
 [server_environment_ir_config_parameter](server_environment_ir_config_parameter/) | 10.0.1.0.1 | Override System Parameters from server environment file
-[sql_request_abstract](sql_request_abstract/) | 10.0.1.0.0 | Abstract Model to manage SQL Requests
+[sql_export](sql_export/) | 10.0.1.0.0 | Export data in csv file with SQL requests
+[sql_request_abstract](sql_request_abstract/) | 10.0.1.0.1 | Abstract Model to manage SQL Requests
 [user_immutable](user_immutable/) | 10.0.1.0.0 | Add Immutable User Support
 [user_threshold](user_threshold/) | 10.0.1.0.1 | Add Configurable User Threshold Support
+[users_ldap_groups](users_ldap_groups/) | 10.0.0.0.0 | Adds user accounts to groups based on rules defined by the administrator.
 [users_ldap_mail](users_ldap_mail/) | 10.0.1.0.0 | LDAP mapping for user name and e-mail
-[users_ldap_populate](users_ldap_populate/) | 10.0.1.0.1 | LDAP Populate
+[users_ldap_populate](users_ldap_populate/) | 10.0.1.0.2 | LDAP Populate
 [webhook](webhook/) | 10.0.1.0.0 | Webhook
 
 
@@ -113,7 +118,6 @@ addon | version | summary
 [server_env_base_external_referentials](server_env_base_external_referentials/) | 1.0 (unported) | Server environment for base_external_referential
 [super_calendar](super_calendar/) | 8.0.0.2.0 (unported) | This module allows to create configurable calendars.
 [test_configuration_helper](test_configuration_helper/) | 9.0.1.0.0 (unported) | Configuration Helper - Tests
-[users_ldap_groups](users_ldap_groups/) | 8.0.1.2.0 (unported) | Adds user accounts to groups based on rules defined by the administrator.
 
 [//]: # (end addons)
 
