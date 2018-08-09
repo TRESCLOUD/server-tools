@@ -5,7 +5,8 @@
 
     'name': 'Password Security',
     "summary": "Allow admin to set password security requirements.",
-    'version': '10.0.1.1.4',
+    # TRESCLOUD: Modificado la version para permitir defaults y estandarizar en nuestras bases de datos
+    'version': '10.0.1.1.5',
     'author': "LasLabs, Odoo Community Association (OCA)",
     'category': 'Base',
     'depends': [
