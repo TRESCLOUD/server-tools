@@ -8,24 +8,25 @@ from odoo import models, fields
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
+    # TRESCLOUD: Modificado todos los valores por defecto
     password_expiration = fields.Integer(
         'Days',
-        default=60,
+        default=360,
         help='How many days until passwords expire',
     )
     password_length = fields.Integer(
         'Characters',
-        default=12,
+        default=6,
         help='Minimum number of characters',
     )
     password_lower = fields.Boolean(
         'Lowercase',
-        default=True,
+        default=False,
         help='Require lowercase letters',
     )
     password_upper = fields.Boolean(
         'Uppercase',
-        default=True,
+        default=False,
         help='Require uppercase letters',
     )
     password_numeric = fields.Boolean(
@@ -35,17 +36,17 @@ class ResCompany(models.Model):
     )
     password_special = fields.Boolean(
         'Special',
-        default=True,
+        default=False,
         help='Require special characters',
     )
     password_history = fields.Integer(
         'History',
-        default=30,
+        default=0,
         help='Disallow reuse of this many previous passwords - use negative '
              'number for infinite, or 0 to disable',
     )
     password_minimum = fields.Integer(
         'Minimum Hours',
-        default=24,
+        default=0,
         help='Amount of hours until a user may change password again',
     )
