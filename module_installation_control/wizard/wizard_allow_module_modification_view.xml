@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="view_allow_module_modification_form" model="ir.ui.view">
+            <field name="name">view.allow.module.modification.form</field>
+            <field name="model">wizard.allow.module.modification</field>
+            <field name="arch" type="xml">
+	            <form string="Set Data Base Test" version="10.0">
+	           		 <group>
+	                	<div> 
+	                		<p align="justify">
+		                 		<h1 style="color:blue">¡Advertencia!</h1>		                 		
+		                    </p>
+	                		<p align="justify">
+		                 		Para poder realizar la modificacion del modulo solicitado es necesario que ingrese la contraseña de administracion de base de datos
+		                 			<br></br>
+		                 			<br></br>INGRESE LA CONTRASEÑA DE ADMINISTRACION DE BASES DE DATOS:
+		                 			<br><field name="password_control" required="1"/></br>
+		                 			<br></br>
+		                    </p>
+	                    </div>
+	                </group>
+	                <footer>
+	                    <button name="action_check" string="Permitir modificar modulo" type="object" class="oe_highlight"/> or
+	                    <button string="Cancelar" special="cancel" class="oe_link"/>
+	                </footer>
+	            </form>
+            </field>
+        </record>
+        
+        <record id="action_allow_module_modification" model="ir.actions.act_window">
+            <field name="name">Permitir modificar modulo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.allow.module.modification</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="domain">[]</field>
+            <field name="context">{'function': 'button_install'}</field>
+        </record>
+    </data>
+</odoo>
