@@ -6,7 +6,7 @@
             <field name="name">view.allow.module.modification.form</field>
             <field name="model">wizard.allow.module.modification</field>
             <field name="arch" type="xml">
-	            <form string="Set Data Base Test" version="10.0">
+	            <form string="Asistente para control de instalacion de modulos" version="10.0">
 	           		 <group>
 	                	<div> 
 	                		<p align="justify">

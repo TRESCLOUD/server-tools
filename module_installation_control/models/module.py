@@ -8,6 +8,7 @@ from odoo.exceptions import AccessDenied, UserError
 class Module(models.Model):
     _inherit = "ir.module.module"
 
+
     @api.multi
     def button_immediate_install_control(self):
         """
@@ -67,7 +68,7 @@ class Module(models.Model):
     def open_wizard_window(self):
         obj, view_id = self.env['ir.model.data'].get_object_reference('module_installation_control', 'view_allow_module_modification_form')
         res = {
-            'name': 'Wizard Allow Module Modification',
+            'name': 'Asistente para control de instalacion de modulos',
             'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'wizard.allow.module.modification',
