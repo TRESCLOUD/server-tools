@@ -10,28 +10,6 @@ class Module(models.Model):
 
 
     @api.multi
-    def button_immediate_install_control(self):
-        """
-        Funcion modificada para controlar con un wizard la manipulacion de modulos
-        """
-        new_context = self._context.copy()
-        new_context['control_modification'] = True
-        new_context['list_ids'] = self._ids
-        new_context['function'] = "button_install"
-        return self.with_context(new_context).button_immediate_install()    
-                
-    @api.multi
-    def button_immediate_uninstall_control(self):
-        """
-        Funcion modificada para controlar con un wizard la manipulacion de modulos
-        """
-        new_context = self._context.copy()
-        new_context['control_modification'] = True
-        new_context['list_ids'] = self._ids
-        new_context['function'] = "button_uninstall"
-        return self.with_context(new_context).button_immediate_uninstall()    
-
-    @api.multi
     def _button_immediate_function(self, function):
         """
         Controla con wizard la instalacion de modulos
@@ -84,10 +62,6 @@ class Module(models.Model):
     @api.multi
     def server_action_immediate_install(self):
         """
-        Funcion que abre el wizard de control directamente
+        Funcion que muestra un error al tratar de instalar desde la accion del servidor
         """
-        new_context = self._context.copy()
-        new_context['control_modification'] = True
-        new_context['list_ids'] = self._ids
-        new_context['function'] = "button_install"
-        return self.open_wizard_window()
+        raise UserError("La instalacion de modulos debe realizarce desde el boton de la vista formulario del modulo")

@@ -9,17 +9,19 @@
 			<field name="inherit_id" ref="base.module_form"/>
 			<field name="arch" type="xml">
 				<xpath expr="//button[@name='button_immediate_install']" position="replace">
-                	<button name="button_immediate_install_control" 
+                	<button name="button_immediate_install" 
                 		states="uninstalled" 
                 		string="Install" 
-                		type="object" 
+                		type="object"
+                		context="{'control_modification': True, 'function': 'button_install'}"
                 		class="btn btn-primary"/>
 				</xpath>
 				<xpath expr="//button[@name='button_uninstall']" position="replace">
-                    <button name="button_immediate_uninstall_control" 
+                    <button name="button_uninstall" 
                     	states="installed" 
                     	string="Uninstall" 
                     	type="object"  
+                		context="{'control_modification': True, 'function': 'button_uninstall'}"
                     	class="btn btn-default"/>
 				</xpath>
 			</field>
@@ -32,7 +34,11 @@
 			<field name="inherit_id" ref="base.module_view_kanban"/>
 			<field name="arch" type="xml">
 				<xpath expr="//button[@name='button_immediate_install']" position="replace">
-					<button type="object" class="btn btn-primary pull-right btn-sm" name="button_immediate_install_control" states="uninstalled">Install</button>
+					<button type="object" 
+						class="btn btn-primary pull-right btn-sm" 
+						name="button_immediate_install" 
+						states="uninstalled" 
+						context="{'control_modification': True, 'function': 'button_install'}">Install</button>
 				</xpath>
 			</field>
 		</record>

@@ -22,7 +22,7 @@ class WizardAllowModuleModification(models.TransientModel):
             raise UserError("La contraseña es incorrecta")
         new_context['password_ok'] = True
         # La contraseña es correcta, ahora se requiere ejecutar la modificacion solicitada
-        list_ids = self._context['list_ids']
+        list_ids = self._context['active_ids']
         module_list = self.env['ir.module.module'].with_context(new_context).browse(list_ids)
         #ejecutamos la funcion solicitada
         if self._context['function'] == 'button_install':
