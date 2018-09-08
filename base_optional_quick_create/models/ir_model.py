@@ -17,19 +17,26 @@ class IrModel(models.Model):
 
         @api.multi
         def _wrap_name_create():
-            def wrapper(self):
+            def wrapper(self, name):
                 raise UserError(_("Can't create quickly. Opening create form"))
             return wrapper
 
         for model in self:
+            # Codigo modificado por TRESCLOUD
+            # Cuando se setea 'avoid_quick_create' a True y luego de vuelta
+            # se debe utilizar el metodo '_revert_method' para contrarestar el
+            # primer '_patch_method'
+            model_name = model.model
+            model_obj = self.env.get(model_name)
             if model.avoid_quick_create:
-                model_name = model.model
-                model_obj = self.env.get(model_name)
                 if (
                         not isinstance(model_obj, type(None)) and
                         not hasattr(model_obj, 'check_quick_create')):
                     model_obj._patch_method('name_create', _wrap_name_create())
                     model_obj.check_quick_create = True
+            elif hasattr(getattr(model_obj, 'name_create'), 'origin'):
+                model_obj._revert_method('name_create')
+            # Fin del codigo modificado por TRESCLOUD
         return True
 
     def _register_hook(self):
