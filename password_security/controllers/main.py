@@ -20,7 +20,7 @@ class PasswordSecuritySession(Session):
             dict(map(operator.itemgetter('name', 'value'), fields))
         )
         user_id = request.env.user
-        user_id.check_password(new_password)
+        user_id._check_password(new_password)
         return super(PasswordSecuritySession, self).change_password(fields)
 
 
@@ -29,27 +29,38 @@ class PasswordSecurityHome(AuthSignupHome):
     def do_signup(self, qcontext):
         password = qcontext.get('password')
         user_id = request.env.user
-        user_id.check_password(password)
+        user_id._check_password(password)
         return super(PasswordSecurityHome, self).do_signup(qcontext)
 
     @http.route()
     def web_login(self, *args, **kw):
         ensure_db()
         response = super(PasswordSecurityHome, self).web_login(*args, **kw)
-        if not request.httprequest.method == 'POST':
+        login_success = request.params.get('login_success', False)
+        if not request.httprequest.method == 'POST' or not login_success:
             return response
+        # Modificado por Trescloud para evitar el error en la pantalla de
+        # inicio cuando no se inserta correctamente el password. Para
+        # solucionar el problema necesitamos guardar el uid del request
+        # antes de que la llamada el 'request.session.authenticate'
+        # lo cambie, en caso de ser None lo restauramos.
+        # Se guarda el uid del request
+        old_uid = request.uid
         uid = request.session.authenticate(
             request.session.db,
             request.params['login'],
             request.params['password']
         )
         if not uid:
+            # Se restaura si el login no fue efectivo
+            request.uid = old_uid
             return response
         users_obj = request.env['res.users'].sudo()
         user_id = users_obj.browse(request.uid)
         if not user_id._password_has_expired():
             return response
         user_id.action_expire_password()
+        request.session.logout(keep_db=True)
         redirect = user_id.partner_id.signup_url
         return http.redirect_with_hash(redirect)
 

@@ -21,6 +21,7 @@ class ResUsers(models.Model):
 
     password_write_date = fields.Datetime(
         'Last password update',
+        default=fields.Datetime.now,
         readonly=True,
     )
     password_history_ids = fields.One2many(
@@ -38,7 +39,7 @@ class ResUsers(models.Model):
     @api.multi
     def write(self, vals):
         if vals.get('password'):
-            self.check_password(vals['password'])
+            self._check_password(vals['password'])
             vals['password_write_date'] = fields.Datetime.now()
         return super(ResUsers, self).write(vals)
 
@@ -55,7 +56,7 @@ class ResUsers(models.Model):
             message.append('\n* ' + _('Numeric digit'))
         if company_id.password_special:
             message.append('\n* ' + _('Special character'))
-        if len(message):
+        if message:
             message = [_('Must contain the following:')] + message
         if company_id.password_length:
             message = [
@@ -65,7 +66,13 @@ class ResUsers(models.Model):
         return '\r'.join(message)
 
     @api.multi
-    def check_password(self, password):
+    def _check_password(self, password):
+        self._check_password_rules(password)
+        self._check_password_history(password)
+        return True
+
+    @api.multi
+    def _check_password_rules(self, password):
         self.ensure_one()
         if not password:
             return True
@@ -78,10 +85,10 @@ class ResUsers(models.Model):
         if company_id.password_numeric:
             password_regex.append(r'(?=.*?\d)')
         if company_id.password_special:
-            password_regex.append(r'(?=.*?\W)')
+            password_regex.append(r'(?=.*?[\W_])')
         password_regex.append('.{%d,}$' % company_id.password_length)
         if not re.search(''.join(password_regex), password):
-            raise PassError(_(self.password_match_message()))
+            raise PassError(self.password_match_message())
         return True
 
     @api.multi
@@ -92,7 +99,8 @@ class ResUsers(models.Model):
         write_date = fields.Datetime.from_string(self.password_write_date)
         today = fields.Datetime.from_string(fields.Datetime.now())
         days = (today - write_date).days
-        return days > self.company_id.password_expiration
+        # La siguiente linea fue modificada por TRESCLOUD
+        return days > self.company_id.password_expiration if self.company_id.password_expiration > 0 else False
 
     @api.multi
     def action_expire_password(self):
@@ -125,27 +133,27 @@ class ResUsers(models.Model):
         return True
 
     @api.multi
-    def _set_password(self, password):
+    def _check_password_history(self, password):
         """ It validates proposed password against existing history
         :raises: PassError on reused password
         """
         crypt = self._crypt_context()
         for rec_id in self:
             recent_passes = rec_id.company_id.password_history
-            if recent_passes < 0:
+            if recent_passes == 0:
+                continue
+            elif recent_passes < 0:
                 recent_passes = rec_id.password_history_ids
             else:
                 recent_passes = rec_id.password_history_ids[
                     0:recent_passes-1
                 ]
-            if len(recent_passes.filtered(
-                lambda r: crypt.verify(password, r.password_crypt)
-            )):
+            if recent_passes.filtered(
+                    lambda r: crypt.verify(password, r.password_crypt)):
                 raise PassError(
                     _('Cannot use the most recent %d passwords') %
                     rec_id.company_id.password_history
                 )
-        super(ResUsers, self)._set_password(password)
 
     @api.multi
     def _set_encrypted_password(self, encrypted):
