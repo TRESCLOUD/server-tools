@@ -3,10 +3,10 @@
 
 {
     'name': 'Module installation Control',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Reporting',
     'description': '''
-        This modulo allow to control the instalation of modules using the admin password:
+        This modulo allow to control the installation of modules using the admin password:
         Autors:
             - Patricio Rangles
     ''',

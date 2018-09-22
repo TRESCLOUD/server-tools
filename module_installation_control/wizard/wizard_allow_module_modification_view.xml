@@ -16,7 +16,7 @@
 		                 		Para poder realizar la modificacion del modulo solicitado es necesario que ingrese la contraseña de administracion de base de datos
 		                 			<br></br>
 		                 			<br></br>INGRESE LA CONTRASEÑA DE ADMINISTRACION DE BASES DE DATOS:
-		                 			<br><field name="password_control" required="1"/></br>
+		                 			<br><field name="password_control" required="1" password="True"/></br>
 		                 			<br></br>
 		                    </p>
 	                    </div>
