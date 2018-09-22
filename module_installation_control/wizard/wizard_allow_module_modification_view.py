@@ -31,6 +31,5 @@ class WizardAllowModuleModification(models.TransientModel):
             return module_list.button_immediate_uninstall()
         return False
         
-    password_control = fields.Char(string="Escriba la contraseña de gestion de base de datos",
-                              default='Escriba la contraseña de gestion de base de datos')
+    password_control = fields.Char(string="Escriba la contraseña de gestion de base de datos")
 
