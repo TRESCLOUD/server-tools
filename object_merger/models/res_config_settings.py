@@ -15,7 +15,8 @@ class IrModel(models.Model):
                                               'will get this module in the list')
 
 
-class ResConfigSettings(models.TransientModel):
+class MergerConfigSettings(models.TransientModel):
+    _name = 'merger.config.settings'
     _inherit = 'res.config.settings'
     
     @api.multi
@@ -35,7 +36,7 @@ class ResConfigSettings(models.TransientModel):
         '''
         '''
         vals2 = copy.deepcopy(vals)
-        result = super(ResConfigSettings, self).create(vals2)
+        result = super(MergerConfigSettings, self).create(vals2)
         self.update_field(vals)
         return result
     
