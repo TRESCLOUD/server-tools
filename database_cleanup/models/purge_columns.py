@@ -122,7 +122,7 @@ class CleanupPurgeWizardColumn(models.TransientModel):
                 res.append((0, 0, {
                             'name': column,
                             'model_id': model_spec[0]}))
-        if not res:
+        if not res and not self.env.context.get('origin') == 'bypass_raise_orphaned_columns':
             raise UserError(_('No orphaned columns found'))
         return res
 
