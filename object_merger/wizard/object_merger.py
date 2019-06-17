@@ -85,11 +85,10 @@ class ObjectMerger(models.TransientModel):
                  self.env[model]._fields[field].store)) and \
                          self.env[model]._fields[field] or False
             except:
-                warning.append(model)                
+                warning.append(model)
         if warning:
             list = '\n'.join("'"+ w + "'," for w in warning)
-            raise ValidationError(u'Los siguientes modelos estan huérfanos y deben ser removidos, evalue con un técnico la posibilidad'
-                                  u'de ejecutar la siguiente consulta "DELETE FROM ir_model_fields WHERE model in (%s)".' % list)
+            self.env.cr.execute("DELETE FROM ir_model_fields WHERE model in %s", (tuple(warning),))
         # For one2many fields on res.partner
         self.env.cr.execute("SELECT name, model FROM ir_model_fields WHERE "
                             "relation=%s and ttype not in ('many2many', 'one2many');",
