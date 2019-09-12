@@ -22,5 +22,6 @@ class Base(models.AbstractModel):
             return super(Base, self).export_data(fields_to_export, raw_data)
         else:
             raise AccessError(
-                _('You do not have permission to export data'),
+                _('You do not have permission to export data. Only user with permissions Export Rights '
+                  'can export data.'),
             )
