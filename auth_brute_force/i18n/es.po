@@ -161,3 +161,10 @@ msgstr "res.authentication.attempt"
 
 #~ msgid "res.banned.remote"
 #~ msgstr "res.banned.remote"
+
+#. module: auth_brute_force
+#: code:addons/10/server-tools/auth_brute_force/controllers/main.py:23
+#: code:addons/auth_brute_force/controllers/main.py:23
+#, python-format
+msgid "The maximun number of tries have been reached. The user has been banned. Please contact with the service administrator."
+msgstr "El número máximo de intentos ha sido alcanzado. El usuario ha sido bloqueado. Póngase en contacto con su administrador de servicio."
