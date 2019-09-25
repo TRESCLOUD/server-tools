@@ -1,23 +1,28 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* base_export_security
+# * base_export_security
 #
+# Translators:
+# OCA Transbot <transbot@odoo-community.org>, 2017
+# Fernando Lara <gennesis45@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-11 14:03+0000\n"
-"PO-Revision-Date: 2019-09-11 14:03+0000\n"
-"Last-Translator: <>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2017-12-16 02:16+0000\n"
+"PO-Revision-Date: 2017-12-16 02:16+0000\n"
+"Last-Translator: Fernando Lara <gennesis45@gmail.com>, 2017\n"
+"Language-Team: Spanish (https://www.transifex.com/oca/teams/23907/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: base_export_security
 #: model:res.groups,comment:base_export_security.export_group
-msgid "\n"
+msgid ""
+"\n"
 "            The user will be able to export data.\n"
 "        "
 msgstr "\n"
@@ -25,23 +30,20 @@ msgstr "\n"
 "        "
 
 #. module: base_export_security
-#: code:addons/10/server-tools/base_export_security/models/export.py:72
 #: code:addons/base_export_security/models/export.py:72
 #, python-format
-msgid "%(records)d <b>%(model)s</b> records exported by <b>%(user)s</b>.<br><b>Fields exported:</b> %(fields)s"
+msgid ""
+"%(records)d <b>%(model)s</b> records exported by <b>%(user)s</b>."
+"<br><b>Fields exported:</b> %(fields)s"
 msgstr "%(records)d <b>%(model)s</b> registros exportados por <b>%(user)s</b>.<br><b>Campos exportados:</b> %(fields)s"
 
 #. module: base_export_security
-#: code:addons/10/server-tools/base_export_security/tests/test_export.py:89
 #: code:addons/base_export_security/tests/test_export.py:89
 #, python-format
-msgid "<p>%(records)d <b>%(model)s</b> records exported by <b>%(user)s</b>.<br><b>Fields exported:</b> %(fields)s</p>"
+msgid ""
+"<p>%(records)d <b>%(model)s</b> records exported by <b>%(user)s</b>."
+"<br><b>Fields exported:</b> %(fields)s</p>"
 msgstr "<p>%(records)d <b>%(model)s</b> registros exportados por <b>%(user)s</b>.<br><b>Campos exportados:</b> %(fields)s</p>"
-
-#. module: base_export_security
-#: model:ir.model.fields,field_description:base_export_security.field_account_bank_statement_import_journal_creation_margin_bottom
-msgid "Bottom Margin (mm)"
-msgstr "Margen inferior (mm)"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_create_uid
@@ -52,11 +54,6 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_create_date
 msgid "Created on"
 msgstr "Creado el"
-
-#. module: base_export_security
-#: model:ir.model.fields,field_description:base_export_security.field_account_bank_statement_import_journal_creation_company_code
-msgid "Código de empresa"
-msgstr "Código de empresa"
 
 #. module: base_export_security
 #: model:ir.model,name:base_export_security.model_export_event
@@ -74,38 +71,7 @@ msgid "Display Name"
 msgstr "Nombre a mostrar"
 
 #. module: base_export_security
-#: model:ir.model.fields,help:base_export_security.field_account_bank_statement_import_journal_creation_margin_right
-msgid "Este campo permite modificar el margen derecho del reporte, ingrese valores positivos en milimetros."
-msgstr "Este campo permite modificar el margen derecho del reporte, ingrese valores positivos en milimetros."
-
-#. module: base_export_security
-#: model:ir.model.fields,help:base_export_security.field_account_bank_statement_import_journal_creation_margin_bottom
-msgid "Este campo permite modificar el margen inferior del reporte, ingrese valores positivos en milimetros."
-msgstr "Este campo permite modificar el margen inferior del reporte, ingrese valores positivos en milimetros."
-
-#. module: base_export_security
-#: model:ir.model.fields,help:base_export_security.field_account_bank_statement_import_journal_creation_margin_left
-msgid "Este campo permite modificar el margen izquierdo del reporte, ingrese valores positivos en milimetros."
-msgstr "Este campo permite modificar el margen izquierdo del reporte, ingrese valores positivos en milimetros."
-
-#. module: base_export_security
-#: model:ir.model.fields,help:base_export_security.field_account_bank_statement_import_journal_creation_margin_top
-msgid "Este campo permite modificar el margen superior del reporte, ingrese valores positivos en milimetros."
-msgstr "Este campo permite modificar el margen superior del reporte, ingrese valores positivos en milimetros."
-
-#. module: base_export_security
-#: model:ir.model.fields,help:base_export_security.field_account_bank_statement_import_journal_creation_company_code
-msgid "Este código va ser usado para generar el cash management del banco bolivariano, debe tener 5 digitos."
-msgstr "Este código va ser usado para generar el cash management del banco bolivariano, debe tener 5 digitos."
-
-#. module: base_export_security
-#: model:ir.model.fields,help:base_export_security.field_account_bank_statement_import_journal_creation_company_mnemonic
-msgid "Este código va ser usado para generar el cash management del banco bolivariano, debe tener 6 digitos."
-msgstr "Este código va ser usado para generar el cash management del banco bolivariano, debe tener 6 digitos."
-
-#. module: base_export_security
 #. openerp-web
-#: code:addons/10/server-tools/base_export_security/static/src/js/base_export_security.js:13
 #: code:addons/base_export_security/static/src/js/base_export_security.js:13
 #, python-format
 msgid "Export"
@@ -166,7 +132,7 @@ msgstr "ID"
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event___last_update
 msgid "Last Modified on"
-msgstr "Última modificación en"
+msgstr "Última actualización por"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_write_uid
@@ -179,32 +145,11 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: base_export_security
-#: model:ir.model.fields,field_description:base_export_security.field_account_bank_statement_import_journal_creation_margin_left
-msgid "Left Margin (mm)"
-msgstr "Margen izquierdo (mm)"
-
-#. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_name
 msgid "Name"
 msgstr "Nombre"
 
 #. module: base_export_security
-#: model:ir.model.fields,field_description:base_export_security.field_account_bank_statement_import_journal_creation_company_mnemonic
-msgid "Nemónico de empresa"
-msgstr "Nemónico de empresa"
-
-#. module: base_export_security
-#: model:ir.model.fields,field_description:base_export_security.field_account_bank_statement_import_journal_creation_margin_right
-msgid "Right Margin (mm)"
-msgstr "Margen derecho (mm)"
-
-#. module: base_export_security
-#: model:ir.model.fields,field_description:base_export_security.field_account_bank_statement_import_journal_creation_margin_top
-msgid "Top Margin (mm)"
-msgstr "Margen superior (mm)"
-
-#. module: base_export_security
-#: code:addons/10/server-tools/base_export_security/models/base.py:25
 #: code:addons/base_export_security/models/base.py:25
 #, python-format
 msgid "You do not have permission to export data. Only user with permissions Export Rights can export data."
@@ -213,10 +158,9 @@ msgstr "No tiene permisos para exportar datos. Solo los usuarios con permisos De
 #. module: base_export_security
 #: model:ir.model,name:base_export_security.model_base
 msgid "base"
-msgstr "Base de Datos"
+msgstr "base de datos"
 
 #. module: base_export_security
 #: model:mail.channel,name:base_export_security.export_channel
 msgid "data exports"
 msgstr "Datos exportados"
-
