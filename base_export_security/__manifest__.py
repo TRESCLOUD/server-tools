@@ -15,6 +15,7 @@
     "depends": [
         "mail",
         "web",
+        "base_import_security_group",
     ],
     "data": [
         "data/export.xml",

@@ -114,7 +114,7 @@ class ResAuthenticationAttempt(models.Model):
         if remote in self._whitelist_remotes():
             return True
         # Check if remote is banned
-        limit = int(get_param("auth_brute_force.max_by_ip", 50))
+        limit = int(get_param("auth_brute_force.max_by_ip", 20))
         if self._hits_limit(limit, remote):
             _logger.warning(
                 "Authentication failed from remote '%s'. "
@@ -125,7 +125,7 @@ class ResAuthenticationAttempt(models.Model):
             )
             return False
         # Check if remote + login combination is banned
-        limit = int(get_param("auth_brute_force.max_by_ip_user", 10))
+        limit = int(get_param("auth_brute_force.max_by_ip_user", 20))
         if self._hits_limit(limit, remote, login):
             _logger.warning(
                 "Authentication failed from remote '%s'. "

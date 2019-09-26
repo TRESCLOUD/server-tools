@@ -25,7 +25,9 @@ msgid ""
 "\n"
 "            The user will be able to export data.\n"
 "        "
-msgstr ""
+msgstr "\n"
+"            El usuario será capáz de exportar datos.\n"
+"        "
 
 #. module: base_export_security
 #: code:addons/base_export_security/models/export.py:72
@@ -33,7 +35,7 @@ msgstr ""
 msgid ""
 "%(records)d <b>%(model)s</b> records exported by <b>%(user)s</b>."
 "<br><b>Fields exported:</b> %(fields)s"
-msgstr ""
+msgstr "%(records)d <b>%(model)s</b> registros exportados por <b>%(user)s</b>.<br><b>Campos exportados:</b> %(fields)s"
 
 #. module: base_export_security
 #: code:addons/base_export_security/tests/test_export.py:89
@@ -41,7 +43,7 @@ msgstr ""
 msgid ""
 "<p>%(records)d <b>%(model)s</b> records exported by <b>%(user)s</b>."
 "<br><b>Fields exported:</b> %(fields)s</p>"
-msgstr ""
+msgstr "<p>%(records)d <b>%(model)s</b> registros exportados por <b>%(user)s</b>.<br><b>Campos exportados:</b> %(fields)s</p>"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_create_uid
@@ -56,12 +58,12 @@ msgstr "Creado el"
 #. module: base_export_security
 #: model:ir.model,name:base_export_security.model_export_event
 msgid "Data Export Record"
-msgstr ""
+msgstr "Registro de exportación de datos"
 
 #. module: base_export_security
 #: model:ir.ui.menu,name:base_export_security.export_category
 msgid "Data Exports"
-msgstr ""
+msgstr "Datos de exportación"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_display_name
@@ -80,12 +82,12 @@ msgstr "Exportar"
 #: model:ir.ui.view,arch_db:base_export_security.export_view_search
 #: model:ir.ui.view,arch_db:base_export_security.export_view_tree
 msgid "Export Date"
-msgstr ""
+msgstr "Fecha de exportación"
 
 #. module: base_export_security
 #: model:ir.ui.view,arch_db:base_export_security.export_view_form
 msgid "Export Log"
-msgstr ""
+msgstr "Registro de exportación"
 
 #. module: base_export_security
 #: model:ir.actions.act_window,name:base_export_security.export_action_log
@@ -93,34 +95,34 @@ msgstr ""
 #: model:ir.ui.view,arch_db:base_export_security.export_view_search
 #: model:ir.ui.view,arch_db:base_export_security.export_view_tree
 msgid "Export Logs"
-msgstr ""
+msgstr "Registros de exportación"
 
 #. module: base_export_security
 #: model:res.groups,name:base_export_security.export_group
 msgid "Export Rights"
-msgstr ""
+msgstr "Derechos de exportación"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_field_ids
 #: model:ir.ui.view,arch_db:base_export_security.export_view_form
 msgid "Exported Fields"
-msgstr ""
+msgstr "Campos exportados"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_model_id
 msgid "Exported Model"
-msgstr ""
+msgstr "Modelo exportado"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_record_ids
 #: model:ir.ui.view,arch_db:base_export_security.export_view_form
 msgid "Exported Records"
-msgstr ""
+msgstr "Registros exportados"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_user_id
 msgid "Exported by"
-msgstr ""
+msgstr "Exportado por"
 
 #. module: base_export_security
 #: model:ir.model.fields,field_description:base_export_security.field_export_event_id
@@ -150,8 +152,8 @@ msgstr "Nombre"
 #. module: base_export_security
 #: code:addons/base_export_security/models/base.py:25
 #, python-format
-msgid "You do not have permission to export data"
-msgstr ""
+msgid "You do not have permission to export data. Only user with permissions Export Rights can export data."
+msgstr "No tiene permisos para exportar datos. Solo los usuarios con permisos Derechos de exportación pueden realizar exportaciones"
 
 #. module: base_export_security
 #: model:ir.model,name:base_export_security.model_base
@@ -161,4 +163,4 @@ msgstr "base de datos"
 #. module: base_export_security
 #: model:mail.channel,name:base_export_security.export_channel
 msgid "data exports"
-msgstr ""
+msgstr "Datos exportados"

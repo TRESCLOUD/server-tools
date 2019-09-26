@@ -161,3 +161,34 @@ msgstr "res.authentication.attempt"
 
 #~ msgid "res.banned.remote"
 #~ msgstr "res.banned.remote"
+
+#. module: auth_brute_force
+#: code:addons/auth_brute_force/controllers/main.py:23
+#, python-format
+msgid "The maximun number of tries have been reached. The user has been banned. Please contact with the service administrator."
+msgstr "El número máximo de intentos ha sido alcanzado. El usuario ha sido bloqueado. Póngase en contacto con su administrador de servicio."
+
+#. module: auth_brute_force
+#: model:ir.model.fields,help:auth_brute_force.field_res_users_is_banned
+msgid "Technical field to compute if user is banned by reach max attempts of failed logins"
+msgstr "Campo técnico para calcular si el usuario ha alcanzado el número máximo de intentos fallidos y ha sido bloqueado"
+
+#. module: auth_brute_force
+#: model:ir.ui.view,arch_db:auth_brute_force.auth_brute_force_view_users_form
+msgid "Unblock user"
+msgstr "Desbloquear usuario"
+
+#. module: auth_brute_force
+#: model:ir.ui.view,arch_db:auth_brute_force.auth_brute_force_view_users_form
+msgid "Reset failed attempts of this user in order to be able to login again"
+msgstr "Elimina los intentos fallidos de éste usuario y lo habilita para iniciar sesión nuevamente"
+
+#. module: auth_brute_force
+#: model:ir.ui.view,arch_db:auth_brute_force.auth_brute_force_view_users_form
+msgid "Open login records"
+msgstr "Abrir registros de inicio de sesión"
+
+#. module: auth_brute_force
+#: model:ir.ui.view,arch_db:auth_brute_force.auth_brute_force_view_users_form
+msgid "Open view of login attempts filtered by active user"
+msgstr "Abre la vista de inicios de sesión filtrada por el usuario actual"
