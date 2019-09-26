@@ -74,4 +74,25 @@
         </field>
     </record>
 
+    <!-- INICIO DEL CODIGO AGREGADO POR TRESCLOUD -->
+    <record id="auth_brute_force_view_users_form" model="ir.ui.view">
+        <field name="name">auth.brute.force.view.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <field name="is_banned" invisible="1"/>
+                <button string="Unblock user" type="object"
+                        name="unblock_user"
+                        attrs="{'invisible': [('is_banned', '=', False)]}"
+                        class="btn-primary"
+                        help="Reset failed attempts of this user in order to be able to login again"/>
+                <button string="Open login records" type="object"
+                        name="open_login_records"
+                        help="Open view of login attempts filtered by active user"/>
+            </header>
+        </field>
+    </record>
+    <!-- FIN DEL CODIGO AGREGADO POR TRESCLOUD -->
+
 </odoo>

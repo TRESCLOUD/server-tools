@@ -8,6 +8,10 @@ from threading import current_thread
 from odoo import api, models, SUPERUSER_ID
 from odoo.exceptions import AccessDenied
 from odoo.service import wsgi_server
+# INICIO DEL CODIGO AGREGADO POR TRESCLOUD
+from odoo.tools import safe_eval
+from odoo import fields
+# FIN DEL CODIGO AGREGADO POR TRESCLOUD
 
 _logger = logging.getLogger(__name__)
 
@@ -148,3 +152,69 @@ class ResUsers(models.Model):
                 raise error
             # Continue with other auth systems
             return super(ResUsers, self).check_credentials(password)
+
+    # INICIO DEL CODIGO AGREGADO POR TRESCLOUD
+    @api.multi
+    def unblock_user(self):
+        """
+        Desbloquea el usuario que ha sido baneado por alcanzar el limite de
+        intentos fallidos de autenticacion
+        """
+        self.ensure_one()
+        attempt_obj = self.env['res.authentication.attempt']
+        domain = [("login", "=", self.login)]
+        # Find last successful login
+        last_ok = attempt_obj.search(
+            domain + [("result", "=", "successful")],
+            order='create_date desc',
+            limit=1,
+        )
+        if last_ok:
+            domain += [("create_date", ">", last_ok.create_date)]
+        # Find failures since last success, if any
+        recent_failures = attempt_obj.search(
+            domain + [("result", "!=", "successful")],
+        )
+        recent_failures.unlink()
+
+    @api.multi
+    def open_login_records(self):
+        """
+        Abre la vista lista del objeto
+        'res.authentication.attempt' filtrado por el usuario activo
+        """
+        self.ensure_one()
+        action_id = self.env.ref(
+            'auth_brute_force.action_res_authentication_attempt'
+        )
+        action_dict = action_id.read([])[0]
+
+        result_context = safe_eval(action_dict.get('context', '{}')) or {}
+        result_context.update({'search_default_login': self.login})
+        action_dict['context'] = str(result_context)
+        return action_dict
+
+    @api.depends()
+    def _compute_is_banned(self):
+        """
+        Busca el ultimo intento de autenticacion del usuario para ver
+        si ha sido baneado
+        """
+        attempts = self.env['res.authentication.attempt'].read_group([
+            ('login', 'in', self.mapped('login')),
+            ('result', '=', 'banned')],
+            fields=['login'],
+            groupby=['login']
+        )
+        mapping = dict(
+            [(attempt['login'], attempt['login_count']) for attempt in attempts]
+        )
+        for user in self:
+            user.is_banned = mapping.get(user.login, 0) > 0
+
+    is_banned = fields.Boolean(
+        help='Technical field to compute if user is banned by reach max'
+             ' attempts of failed logins',
+        compute="_compute_is_banned"
+    )
+    # FIN DEL CODIGO AGREGADO POR TRESCLOUD
