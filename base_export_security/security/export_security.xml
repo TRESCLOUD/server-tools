@@ -9,5 +9,8 @@
             The user will be able to export data.
         </field>
         <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <!-- INICIO DEL CODIGO AGREGADO POR TRESCLOUD   -->
+        <field name="category_id" ref="base_import_security_group.category_import_export_csv_security"/>
+        <!-- FIN DEL CODIGO AGREGADO POR TRESCLOUD   -->
     </record>
 </odoo>
