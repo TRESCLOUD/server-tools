@@ -9,13 +9,13 @@ from odoo.addons.auth_signup.controllers.main import AuthSignupHome as Home
 
 class HomeAuth(Home):
 
-    @http.route('/web/login', type='http', auth="none")
-    def web_login(self, redirect=None, **kw):
+    @http.route()
+    def web_login(self, *args, **kw):
         """
         Heredamos para agregar mensaje de bloqueo de cuenta
         a partir de sobrepasar los intentos de autenticarse 
         """
-        res = super(HomeAuth, self).web_login(redirect=redirect, kw=kw)
+        res = super(HomeAuth, self).web_login(*args, **kw)
         if res.qcontext.get('login', False) and res.qcontext['login_success'] == False:
             attemp_id = request.env['res.authentication.attempt'].search([
                 ('login', '=', res.qcontext['login'])], limit=1)
