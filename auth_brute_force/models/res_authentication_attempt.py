@@ -35,6 +35,11 @@ class ResAuthenticationAttempt(models.Model):
     whitelisted = fields.Boolean(
         compute="_compute_whitelisted",
     )
+    # INICIO DEL CODIGO AGREGADO POR TRESCLOUD
+    error_metadata = fields.Text(
+        help="Technical field to store banned reason",
+    )
+    # FIN DEL CODIGO AGREGADO POR TRESCLOUD
 
     @api.multi
     @api.depends('remote')
@@ -115,7 +120,11 @@ class ResAuthenticationAttempt(models.Model):
             return True
         # Check if remote is banned
         limit = int(get_param("auth_brute_force.max_by_ip", 20))
-        if self._hits_limit(limit, remote):
+        # INICIO DEL MODIFICADO AGREGADO POR TRESCLOUD
+        ban_ip= get_param("auth_brute_force.ban_ip_address", False)
+
+        if ban_ip and self._hits_limit(limit, remote):
+        # FIN DEL CODIGO MODIFICADO POR TRESCLOUD
             _logger.warning(
                 "Authentication failed from remote '%s'. "
                 "The remote has been banned. "
@@ -123,6 +132,7 @@ class ResAuthenticationAttempt(models.Model):
                 remote,
                 login,
             )
+            self.env.user._auth_attempt_update({"error_metadata": "remote"})
             return False
         # Check if remote + login combination is banned
         limit = int(get_param("auth_brute_force.max_by_ip_user", 20))
@@ -134,6 +144,7 @@ class ResAuthenticationAttempt(models.Model):
                 remote,
                 login,
             )
+            self.env.user._auth_attempt_update({"error_metadata": "user"})
             return False
         # If you get here, you are a good boy (for now)
         return True

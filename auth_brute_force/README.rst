@@ -35,6 +35,10 @@ You can use these configuration parameters that control this addon behavior:
   maximum successive failures allowed for any IP and user combination.
   After hitting the limit, that user and IP combination is banned.
 
+* ``auth_brute_force.ban_ip_address`` defaults to False, and indicates if
+ module will ban IP address. If this param is unset or False only users will
+ be banned.
+
 Usage
 =====
 
