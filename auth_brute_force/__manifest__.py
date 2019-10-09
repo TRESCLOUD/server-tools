@@ -15,6 +15,10 @@
     'depends': [
         # If we don't depend on it, it would inhibit this addon
         "auth_crypt",
+        # DEPENDENCIA AGREGADA POR TRESCLOUD
+        # Se neceita mejorar el mensaje cuando no se puede restablecer la
+        # contraseña debido a que el usuario esta baneado
+        "auth_signup",
     ],
     'data': [
         'security/ir_model_access.yml',
