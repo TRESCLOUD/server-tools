@@ -24,7 +24,7 @@ class WizardAllowModuleModification(models.TransientModel):
         # La contraseña es correcta, ahora se requiere ejecutar la modificacion solicitada
         list_ids = self._context['active_ids']
         module_list = self.env['ir.module.module'].with_context(new_context).browse(list_ids)
-        update_module = self.env['base.module.upgrade']
+        update_module = self.env['base.module.upgrade'].with_context(new_context)
         #ejecutamos la funcion solicitada
         if self._context['function'] == 'button_install':
             return module_list.button_immediate_install()
