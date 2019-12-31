@@ -7,8 +7,8 @@
     'category': 'Reporting',
     'description': '''
         This modulo allow to control the installation of modules using the admin password:
-        Autors:
-            - Patricio Rangles
+            Autors:
+                - Patricio Rangles
     ''',
     'author': 'TRESCLOUD CIA LTDA',
     'maintainer': 'TRESCLOUD CIA. LTDA.',
