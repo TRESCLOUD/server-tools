@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2015 Akretion (<http://www.akretion.com>)
 # Copyright (C) 2017 - Today: GRAP (http://www.grap.coop)
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
@@ -6,16 +5,20 @@
 
 import re
 import uuid
-import StringIO
+import logging
+from io import BytesIO
 import base64
 from psycopg2 import ProgrammingError
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+logger = logging.getLogger(__name__)
+
 
 class SQLRequestMixin(models.AbstractModel):
     _name = 'sql.request.mixin'
+    _description = 'SQL Request Mixin'
 
     _clean_query_enabled = True
 
@@ -149,7 +152,7 @@ class SQLRequestMixin(models.AbstractModel):
             query = self.query % params
         else:
             query = self.query
-        query = query.decode('utf-8')
+        query = query
 
         if mode in ('fetchone', 'fetchall'):
             pass
@@ -167,9 +170,8 @@ class SQLRequestMixin(models.AbstractModel):
             rollback_name = self._create_savepoint()
         try:
             if mode == 'stdout':
-                output = StringIO.StringIO()
+                output = BytesIO()
                 self.env.cr.copy_expert(query, output)
-                output.getvalue()
                 res = base64.b64encode(output.getvalue())
                 output.close()
             else:
@@ -243,8 +245,9 @@ class SQLRequestMixin(models.AbstractModel):
             self.env.cr.execute(query)
             res = self._hook_executed_request()
         except ProgrammingError as e:
+            logger.exception("Failed query: %s", query)
             raise UserError(
-                _("The SQL query is not valid:\n\n %s") % e.message)
+                _("The SQL query is not valid:\n\n %s") % e)
         finally:
             self._rollback_savepoint(rollback_name)
         return res
