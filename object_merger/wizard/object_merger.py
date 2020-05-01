@@ -33,6 +33,47 @@ class ObjectMerger(models.TransientModel):
         return res
 
     @api.multi
+    def check_for_followers(self, object_ids):
+        """
+        Se encarga de un caso especifico que tiene que ver
+        con los seguidores de un documento, la logica es la siguiente:
+        un documento no puede ser seguido mas de una vez por el mismo partner
+        cuando se están mezclando los partner este caso se puede dar,
+        lo que haremos será eliminar uno de los followers que será el que
+        no se seleccione en el wizard para que se mantenga
+        """
+        partner_ids = object_ids
+        if partner_ids:
+            query = '''
+                select mf.res_id, mf.res_model, array_agg(mf.partner_id) as partner_ids
+                from mail_followers mf
+                where partner_id is not null and partner_id in %s
+                group by mf.res_id, mf.res_model
+            '''
+            self.env.cr.execute(query, (tuple(partner_ids),))
+            lines = self.env.cr.dictfetchall()
+
+            lines = dict(map(lambda x: ((x['res_id'], x['res_model']), x['partner_ids']),
+                             lines))
+            # El partner que permanece lo tomamos del campos
+            # que se contruye al fly en al field_view_get
+            partner_to_keep = self.x_res_partner_id.id
+            xpartner_ids = [partner for partner in partner_ids if partner != partner_to_keep]
+            #partner_ids.remove(partner_to_keep)
+            for line in lines:
+                # Si entro es que en este registro los partners a mezclar son seguidores
+                for partner in xpartner_ids:
+                    if partner in lines[line]:
+                        mail_follower_to_unlink = self.env['mail.followers'].search(
+                            [
+                                ('res_id', '=', line[0]),
+                                ('res_model', '=', line[1]),
+                                ('partner_id', '=', partner),
+                            ]
+                        )
+                        mail_follower_to_unlink.unlink()
+
+    @api.multi
     def action_merge(self):
         ''''
         Merges two or more objects
@@ -47,6 +88,10 @@ class ObjectMerger(models.TransientModel):
         object_ids = self.env.context.get('active_ids', [])
         field_to_read = self.env.context.get('field_to_read')
         fields = field_to_read and [field_to_read] or []
+
+        # Agregamos la validacion para los seguidores
+        if model_pool == self.env['res.partner']:
+            self.check_for_followers(object_ids)
 
         if self.env.context.get('origin', False) \
                 != 'ecua_fiscal_positions_core':
