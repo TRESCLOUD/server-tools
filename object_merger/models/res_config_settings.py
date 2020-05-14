@@ -59,7 +59,7 @@ class MergerConfigSettings(models.TransientModel):
         # Unlink Previous Actions
         unlink_ids = action_obj.search([('res_model', '=', 'object.merger')])
         for unlink_id in unlink_ids:
-            unlink_id.unlink()
+            unlink_id.suspend_security().unlink()
             un_val_ids = value_obj.search([('value', '=', "ir.actions.act_window," + str(unlink_id.id))])
             un_val_ids.unlink()
         # Put all models which were selected before back to not an object_merger
@@ -80,7 +80,7 @@ class MergerConfigSettings(models.TransientModel):
             read_datas = mod_ids
         for model in read_datas:
             field_name = 'x_' + model['model'].replace('.','_') + '_id'
-            act_id = action_obj.create({
+            act_id = action_obj.suspend_security().create({
                 'name': "%s " % model['name'] + _("Merger"),
                 'type': 'ir.actions.act_window',
                 'res_model': 'object.merger',
@@ -90,7 +90,7 @@ class MergerConfigSettings(models.TransientModel):
                 'view_mode': 'form',
                 'target': 'new'
             })
-            value_obj.create({
+            value_obj.suspend_security().create({
                 'name': "%s " % model['name'] + _("Merger"),
                 'model': model['model'],
                 'key2': 'client_action_multi',
