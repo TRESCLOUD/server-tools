@@ -71,7 +71,7 @@ class ObjectMerger(models.TransientModel):
                                 ('partner_id', '=', partner),
                             ]
                         )
-                        mail_follower_to_unlink.unlink()
+                        mail_follower_to_unlink.suspend_security().unlink()
 
     @api.multi
     def action_merge(self):
