@@ -30,7 +30,24 @@ class Module(models.Model):
         1) El contexto asociado contenga la clave control_modification en True
         2) El bypass: si el modulo trescloud_set_database_test esta instalado permitir manipular todos los modulos
         3) El password fue correcto, debe permitir la instalacion
+
+        2020-07-17: Se agrega un segundo bypass basado en whitelist, de esta manera se controla
+                    modulos permitidos de instalacion sin necesidad de consultarlo
         """
+        white_list_module = (
+            'proyectox_landed_costs',
+            'trescloud_landed_costs',
+            'ecua_mrp',
+            'trescloud_product_history',
+            'ecua_fixed_assets',
+            'ecua_fixed_assets_ifrs',
+            'ecua_credit_card_reconcile',
+            'ecua_account_analitic',
+            'web_environment_ribbon'
+            )
+        if self.name in white_list_module:
+            # Activado Whitelist
+            return False
         module_ids = self.env['ir.module.module'].sudo().search([('name','=','trescloud_set_database_test'), ('state','=','installed')])
         if module_ids:
             # Activado Bypass
