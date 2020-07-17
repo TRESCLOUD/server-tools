@@ -46,8 +46,16 @@ class Module(models.Model):
             'web_environment_ribbon'
             )
         if self.name in white_list_module:
+            # Esta seccion funciona en la instalacion
             # Activado Whitelist
             return False
+        elif not self.name and self._context.get('active_id',False):
+            # Esta seccion funciona en la desinstalacion
+            # verifico contra el whitelist pero por id
+            module_browse = self.env['ir.module.module'].sudo().browse(self._context.get('active_id',False))
+            if module_browse.name in white_list_module:
+                # Activado Whitelist
+                return False                
         module_ids = self.env['ir.module.module'].sudo().search([('name','=','trescloud_set_database_test'), ('state','=','installed')])
         if module_ids:
             # Activado Bypass
