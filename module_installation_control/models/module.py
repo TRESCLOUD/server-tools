@@ -40,7 +40,6 @@ class Module(models.Model):
             'ecua_mrp',
             'trescloud_product_history',
             'ecua_fixed_assets',
-            'ecua_fixed_assets_ifrs',
             'ecua_credit_card_reconcile',
             'ecua_account_analitic',
             'web_environment_ribbon'
@@ -51,10 +50,10 @@ class Module(models.Model):
             return False
         elif not self.name and self._context.get('active_id',False):
             # Esta seccion funciona en la desinstalacion
-            # verifico contra el whitelist pero por id
+            # verifico si es el modulo de web_environment_ribbon pero por id
             module_browse = self.env['ir.module.module'].sudo().browse(self._context.get('active_id',False))
-            if module_browse.name in white_list_module:
-                # Activado Whitelist
+            if module_browse.name == 'web_environment_ribbon':
+                # Activado la desinstalacion de web_environment_ribbon
                 return False                
         module_ids = self.env['ir.module.module'].sudo().search([('name','=','trescloud_set_database_test'), ('state','=','installed')])
         if module_ids:
