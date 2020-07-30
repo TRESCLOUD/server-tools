@@ -43,7 +43,8 @@ class Module(models.Model):
             'ecua_credit_card_reconcile',
             'ecua_account_analitic',
             'web_environment_ribbon',
-            'ecua_ecommerce'
+            'ecua_ecommerce',
+            'mail_outbound_static'
             )
         if self.name in white_list_module:
             # Esta seccion funciona en la instalacion
