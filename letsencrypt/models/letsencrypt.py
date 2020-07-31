@@ -9,7 +9,7 @@ import urlparse
 import subprocess
 import tempfile
 import socket
-import pickle
+import json
 import datetime
 from odoo import _, api, models, exceptions
 from odoo.tools import config, DEFAULT_SERVER_DATETIME_FORMAT
@@ -135,31 +135,26 @@ class Letsencrypt(models.AbstractModel):
         """
         Ejecuta el pedido de reload al servidor nginx centralizado
         """
-        #---------------------------------------
-        # Clase para comunicacion de datos
-        class Message:
-            ID = ''
-            CODE = ''
-            RESULT = ''
-            DATA = ''    
-            def __init__(self, ID):
-                self.ID = ID
-        #--------------------------------------
+        # se usara JSON para envio de datos y recepcion
+        message = {
+            'ID': '',
+            'CODE': '',
+            'RESULT': '',
+            'DATA': ''    
+        }
         company = self.env.user.company_id
         BUFFER_SIZE = 4096
-        message = Message(
-            # El ID siempre sera el nombre de la BDD
-            # Para Odoo Deployer es el ID de instancia
-            ID=self.env.cr.dbname
-        )
-        data_string = pickle.dumps(message)
+        # El ID siempre sera el nombre de la BDD
+        # Para Odoo Deployer es el ID de instancia
+        message['ID'] = self.env.cr.dbname
+        data_string = json.dumps(message, ensure_ascii=False).encode('utf8')
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((company.remote_nginx_server, company.nginx_reload_server_port))
+        s.connect((company.remote_nginx_server, int(company.nginx_reload_server_port)))
         s.send(data_string)
         data = s.recv(BUFFER_SIZE)
         s.close()
-        message = pickle.loads(data)
-        return message.CODE, message.RESULT
+        message = json.loads(data)
+        return message['CODE'], message['RESULT']
 
     @api.model
     def cron(self):
@@ -202,7 +197,7 @@ class Letsencrypt(models.AbstractModel):
             # Verifico si en compania esta habilitado el nginx reload server
             if company.use_remote_reload_nginx_script:
                 # Modo remoto, se usa los parametros para realizar el reload remoto
-                code, result = execute_reload_nginx()
+                code, result = self.execute_reload_nginx()
                 if code!= 0:
                     raise exceptions.UserError(u'Error al recargar el servidor nginx!: %s\n%s' % (code, result))
             else:
