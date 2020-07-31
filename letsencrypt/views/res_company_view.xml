@@ -4,21 +4,23 @@
 	<record id="view_company_form_lets_encrypt" model="ir.ui.view">
 		<field name="name">view.company.form.lets.encrypt</field>
 		<field name="model">res.company</field>
-		<field name="inherit_id" ref="ecua_hr.view_company_form_human_resources" />
+		<field name="inherit_id" ref="base.view_company_form"/>
 		<field name="arch" type="xml">
-			<xpath expr="//page[@name='ecuatorian_accounting']" position="after">
-				<page string="Configuración Let's Encrypt" name='page_lets_encrypt'>
-					<group>
-						<group name="group_lets_encrypt" string="Let's Encrypt">
-							<field name="last_execution_result" readonly="1"/>
-							<field name="ssl_expiration_date" readonly="1"/>
-							<field name="use_remote_reload_nginx_script"/>
-							<field name="remote_nginx_server"/>
-							<field name="nginx_reload_server_port"/>
+			<data>
+				<xpath expr="//notebook" position="inside">
+					<page string="Configuración Let's Encrypt" name='page_lets_encrypt'>
+						<group>
+							<group name="group_lets_encrypt" string="Let's Encrypt">
+								<field name="last_execution_result" readonly="1"/>
+								<field name="ssl_expiration_date" readonly="1"/>
+								<field name="use_remote_reload_nginx_script"/>
+								<field name="remote_nginx_server"/>
+								<field name="nginx_reload_server_port"/>
+							</group>
 						</group>
-					</group>
-				</page>
-			</xpath>
+					</page>
+				</xpath>
+			</data>
 		</field>
 	</record>
 
