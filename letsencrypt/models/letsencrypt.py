@@ -160,7 +160,7 @@ class Letsencrypt(models.AbstractModel):
     def cron(self):
         # Agregado manejo de configuraciones en compania
         company = self.env.user.company_id
-        company.last_execution_result = ''
+        company.last_execution_result = 'OK'
         try:
             domain = urlparse.urlparse(
                 self.env['ir.config_parameter'].get_param(
@@ -198,7 +198,7 @@ class Letsencrypt(models.AbstractModel):
             if company.use_remote_reload_nginx_script:
                 # Modo remoto, se usa los parametros para realizar el reload remoto
                 code, result = self.execute_reload_nginx()
-                if code!= 0:
+                if int(code)!= 0:
                     raise exceptions.UserError(u'Error al recargar el servidor nginx!: %s\n%s' % (code, result))
             else:
                 # Se utiliza el metodo original 
