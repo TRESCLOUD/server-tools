@@ -11,11 +11,8 @@
 					<page string="Configuración Let's Encrypt" name='page_lets_encrypt'>
 						<group>
 							<group name="group_lets_encrypt" string="Let's Encrypt">
-								<field name="last_execution_result" readonly="1"/>
 								<field name="ssl_expiration_date" readonly="1"/>
-								<field name="use_remote_reload_nginx_script"/>
-								<field name="remote_nginx_server"/>
-								<field name="nginx_reload_server_port"/>
+								<field name="last_execution_result" readonly="1"/>
 							</group>
 						</group>
 					</page>
