@@ -165,9 +165,9 @@ class Letsencrypt(models.AbstractModel):
                 chain_cert.close()
                 _logger.info('wrote %s', crt.name)
             # Si se llega a esta parte sin errores ya tenemos certificado
-            # se setea la fecha actual + 3 meses como fecha de caducidad
-            # del certificado
-            date_now = datetime.datetime.now() + datetime.timedelta(3*365/12)
+            # se setea la fecha actual + 3 meses - 1 dia como fecha de caducidad
+            # del certificado (en las pruebas falla por un dia)
+            date_now = datetime.datetime.now() + datetime.timedelta((3 * 365 / 12) - 1)
             company.ssl_expiration_date = date_now.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
             # Hago un reload a nginx si hay un comando disponible
             reload_cmd = self.env['ir.config_parameter'].get_param(
