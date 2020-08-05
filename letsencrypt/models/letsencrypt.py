@@ -173,8 +173,10 @@ class Letsencrypt(models.AbstractModel):
             reload_cmd = self.env['ir.config_parameter'].get_param(
                 'letsencrypt.reload_command', False)
             if reload_cmd:
-                _logger.info('reloading webserver...')
-                self.call_cmdline(['sh', '-c', reload_cmd])
+                # se setea como false por bdd, no puede estar vacio el campo
+                if reload_cmd.lower() != 'false':
+                    _logger.info('reloading webserver...')
+                    self.call_cmdline(['sh', '-c', reload_cmd])
             else:
                 _logger.info('no command defined for reloading webserver, please '
                                 'do it manually in order to apply new certificate')
