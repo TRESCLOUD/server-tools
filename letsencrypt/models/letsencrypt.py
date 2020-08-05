@@ -180,4 +180,5 @@ class Letsencrypt(models.AbstractModel):
                                 'do it manually in order to apply new certificate')
         except Exception as e:
             company.last_execution_result = str(e)
-            
+        # Se agrega return True para evitar problemas al usarlo externamente como funcion
+        return True
