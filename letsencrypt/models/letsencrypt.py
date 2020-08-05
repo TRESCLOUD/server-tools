@@ -170,16 +170,14 @@ class Letsencrypt(models.AbstractModel):
             date_now = datetime.datetime.now() + datetime.timedelta((3 * 365 / 12) - 1)
             company.ssl_expiration_date = date_now.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
             # Hago un reload a nginx si hay un comando disponible
-            reload_cmd = self.env['ir.config_parameter'].get_param(
-                'letsencrypt.reload_command', False)
+            reload_cmd = self.env['ir.config_parameter'].get_param('letsencrypt.reload_command', False)
             if reload_cmd:
                 # se setea como false por bdd, no puede estar vacio el campo
                 if reload_cmd.lower() != 'false':
                     _logger.info('reloading webserver...')
                     self.call_cmdline(['sh', '-c', reload_cmd])
             else:
-                _logger.info('no command defined for reloading webserver, please '
-                                'do it manually in order to apply new certificate')
+                _logger.info('no command defined for reloading webserver, please do it manually in order to apply new certificate')
         except Exception as e:
             company.last_execution_result = str(e)
         # Se agrega return True para evitar problemas al usarlo externamente como funcion
