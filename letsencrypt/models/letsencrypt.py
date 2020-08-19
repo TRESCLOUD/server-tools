@@ -8,9 +8,11 @@ import urllib2
 import urlparse
 import subprocess
 import tempfile
+import socket
+import json
+import datetime
 from odoo import _, api, models, exceptions
-from odoo.tools import config
-
+from odoo.tools import config, DEFAULT_SERVER_DATETIME_FORMAT
 
 DEFAULT_KEY_LENGTH = 4096
 _logger = logging.getLogger(__name__)
@@ -131,38 +133,52 @@ class Letsencrypt(models.AbstractModel):
 
     @api.model
     def cron(self):
-        domain = urlparse.urlparse(
-            self.env['ir.config_parameter'].get_param(
-                'web.base.url', 'localhost')).netloc
-        self.validate_domain(domain)
-        account_key = self.generate_account_key()
-        csr = self.generate_csr(domain)
-        acme_challenge = get_challenge_dir()
-        if not os.path.isdir(acme_challenge):
-            os.makedirs(acme_challenge)
-        if self.env.context.get('letsencrypt_dry_run'):
-            crt_text = 'I\'m a test text'
-        else:  # pragma: no cover
-            from acme_tiny import get_crt, DEFAULT_CA
-            crt_text = get_crt(
-                account_key, csr, acme_challenge, log=_logger, CA=DEFAULT_CA)
-        with open(os.path.join(get_data_dir(), '%s.crt' % domain), 'w')\
-                as crt:
-            crt.write(crt_text)
-            chain_cert = urllib2.urlopen(
+        # Agregado manejo de configuraciones en compania
+        company = self.env.user.company_id
+        company.last_execution_result = False
+        try:
+            domain = urlparse.urlparse(
                 self.env['ir.config_parameter'].get_param(
-                    'letsencrypt.chain_certificate_address',
-                    'https://letsencrypt.org/certs/'
-                    'lets-encrypt-x3-cross-signed.pem')
-            )
-            crt.write(chain_cert.read())
-            chain_cert.close()
-            _logger.info('wrote %s', crt.name)
-        reload_cmd = self.env['ir.config_parameter'].get_param(
-            'letsencrypt.reload_command', False)
-        if reload_cmd:
-            _logger.info('reloading webserver...')
-            self.call_cmdline(['sh', '-c', reload_cmd])
-        else:
-            _logger.info('no command defined for reloading webserver, please '
-                         'do it manually in order to apply new certificate')
+                    'web.base.url', 'localhost')).netloc
+            self.validate_domain(domain)
+            account_key = self.generate_account_key()
+            csr = self.generate_csr(domain)
+            acme_challenge = get_challenge_dir()
+            if not os.path.isdir(acme_challenge):
+                os.makedirs(acme_challenge)
+            if self.env.context.get('letsencrypt_dry_run'):
+                crt_text = 'I\'m a test text'
+            else:  # pragma: no cover
+                from acme_tiny import get_crt, DEFAULT_CA
+                crt_text = get_crt(
+                    account_key, csr, acme_challenge, log=_logger, CA=DEFAULT_CA)
+            with open(os.path.join(get_data_dir(), '%s.crt' % domain), 'w')\
+                    as crt:
+                crt.write(crt_text)
+                chain_cert = urllib2.urlopen(
+                    self.env['ir.config_parameter'].get_param(
+                        'letsencrypt.chain_certificate_address',
+                        'https://letsencrypt.org/certs/'
+                        'lets-encrypt-x3-cross-signed.pem')
+                )
+                crt.write(chain_cert.read())
+                chain_cert.close()
+                _logger.info('wrote %s', crt.name)
+            # Si se llega a esta parte sin errores ya tenemos certificado
+            # se setea la fecha actual + 3 meses - 1 dia como fecha de caducidad
+            # del certificado (en las pruebas falla por un dia)
+            date_now = datetime.datetime.now() + datetime.timedelta((3 * 365 / 12) - 1)
+            company.ssl_expiration_date = date_now.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+            # Hago un reload a nginx si hay un comando disponible
+            reload_cmd = self.env['ir.config_parameter'].get_param('letsencrypt.reload_command', False)
+            if reload_cmd:
+                # se setea como false por bdd, no puede estar vacio el campo
+                if reload_cmd.lower() != 'false':
+                    _logger.info('reloading webserver...')
+                    self.call_cmdline(['sh', '-c', reload_cmd])
+            else:
+                _logger.info('no command defined for reloading webserver, please do it manually in order to apply new certificate')
+        except Exception as e:
+            company.last_execution_result = str(e)
+        # Se agrega return True para evitar problemas al usarlo externamente como funcion
+        return True

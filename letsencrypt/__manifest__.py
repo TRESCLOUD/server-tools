@@ -17,6 +17,8 @@
         "data/ir_config_parameter.xml",
         "data/ir_cron.xml",
         "demo/ir_cron.xml",
+        # Views
+        "views/res_company_view.xml",
     ],
     "post_init_hook": 'post_init_hook',
     'installable': True,
