@@ -11,12 +11,14 @@
     "category": "Hidden/Dependency",
     "summary": "Request SSL certificates from letsencrypt.org",
     "depends": [
-        'base_setup',
+        'base',
     ],
     "data": [
         "data/ir_config_parameter.xml",
-        "data/ir_cron.xml",
-        "demo/ir_cron.xml",
+        # TODO: Revisar problema al insertar data a ir.cron
+        # en base de datos limpia
+        #"data/ir_cron.xml",
+        #"demo/ir_cron.xml",
         # Views
         "views/res_company_view.xml",
     ],
