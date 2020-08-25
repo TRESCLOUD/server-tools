@@ -4,13 +4,13 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 import os
 import logging
-import urlparse
 import subprocess
 import tempfile
 import socket
 import json
 import datetime
 from urllib.request import urlopen
+from urllib.parse import urlparse
 from odoo import _, api, models, exceptions
 from odoo.tools import config, DEFAULT_SERVER_DATETIME_FORMAT
 
@@ -137,7 +137,7 @@ class Letsencrypt(models.AbstractModel):
         company = self.env.user.company_id
         company.last_execution_result = False
         try:
-            domain = urlparse.urlparse(
+            domain = urlparse(
                 self.env['ir.config_parameter'].get_param(
                     'web.base.url', 'localhost')).netloc
             self.validate_domain(domain)
