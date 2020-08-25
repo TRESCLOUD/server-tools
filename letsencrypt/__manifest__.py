@@ -11,7 +11,7 @@
     "category": "Hidden/Dependency",
     "summary": "Request SSL certificates from letsencrypt.org",
     "depends": [
-        'base',
+        'base_setup',
     ],
     "data": [
         "data/ir_config_parameter.xml",
