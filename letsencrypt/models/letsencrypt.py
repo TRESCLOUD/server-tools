@@ -4,13 +4,13 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 import os
 import logging
-import urllib2
 import urlparse
 import subprocess
 import tempfile
 import socket
 import json
 import datetime
+from urllib.request import urlopen
 from odoo import _, api, models, exceptions
 from odoo.tools import config, DEFAULT_SERVER_DATETIME_FORMAT
 
@@ -155,7 +155,7 @@ class Letsencrypt(models.AbstractModel):
             with open(os.path.join(get_data_dir(), '%s.crt' % domain), 'w')\
                     as crt:
                 crt.write(crt_text)
-                chain_cert = urllib2.urlopen(
+                chain_cert = urlopen(
                     self.env['ir.config_parameter'].get_param(
                         'letsencrypt.chain_certificate_address',
                         'https://letsencrypt.org/certs/'
