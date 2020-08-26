@@ -110,7 +110,7 @@ class Letsencrypt(models.AbstractModel):
         )
         csr = os.path.join(get_data_dir(), '%s.csr' % domain)
         with tempfile.NamedTemporaryFile() as cfg:
-            cfg.write(open(config).read())
+            cfg.write(open(config, 'rb').read())
             if len(domains) > 1:
                 cfg.write(
                     '\n[SAN]\nsubjectAltName=' +
@@ -152,9 +152,9 @@ class Letsencrypt(models.AbstractModel):
                 from acme_tiny import get_crt, DEFAULT_CA
                 crt_text = get_crt(
                     account_key, csr, acme_challenge, log=_logger, CA=DEFAULT_CA)
-            with open(os.path.join(get_data_dir(), '%s.crt' % domain), 'w')\
+            with open(os.path.join(get_data_dir(), '%s.crt' % domain), 'wb')\
                     as crt:
-                crt.write(crt_text)
+                crt.write(crt_text.encode())
                 chain_cert = urlopen(
                     self.env['ir.config_parameter'].get_param(
                         'letsencrypt.chain_certificate_address',
