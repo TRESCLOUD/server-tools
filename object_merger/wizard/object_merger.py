@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, api, fields as odoo_fields, models, SUPERUSER_ID
-from openerp.tools import ustr
+from odoo import _, api, fields as odoo_fields, models
+from odoo.tools.misc import ustr
 from odoo.exceptions import ValidationError
 
 
@@ -10,26 +10,28 @@ class ObjectMerger(models.TransientModel):
     _name = 'object.merger'
 
     @api.model
-    def fields_view_get(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         '''
         '''
-        res = super(ObjectMerger, self).fields_view_get(view_id, view_type, toolbar=toolbar, submenu=False)
-        object_ids = self.env.context.get('active_ids', [])
-        active_model = self.env.context.get('active_model')
-        field_name = 'x_' + (active_model and active_model.replace('.','_') or '') + '_id'
-        fields = res['fields']
-        if object_ids:
-            view_part = """<label for='"""+field_name+"""'/>
-                        <div>
-                            <field name='""" + field_name +"""'
-                            required="1" domain="[(\'id\', \'in\', """ + str(object_ids) + """)]"/>
-                        </div>"""
-            res['arch'] = res['arch'].decode('utf8').replace("""<separator string="to_replace"/>""", view_part)
-            field = self.fields_get([field_name])
-            fields.update(field)
-            res['fields'] = fields
-            res['fields'][field_name]['domain'] = [('id', 'in', object_ids)]
-            res['fields'][field_name]['required'] = True
+        res = super(ObjectMerger, self).fields_view_get(view_id=view_id,
+                                                        view_type=view_type, toolbar=toolbar, submenu=False)
+        if view_type == 'form':
+            object_ids = self.env.context.get('active_ids', [])
+            active_model = self.env.context.get('active_model')
+            field_name = 'x_' + (active_model and active_model.replace('.','_') or '') + '_id'
+            fields = res['fields']
+            if object_ids:
+                view_part = """<label for='"""+field_name+"""'/>
+                            <div>
+                                <field name='""" + field_name +"""'
+                                required="1" domain="[(\'id\', \'in\', """ + str(object_ids) + """)]"/>
+                            </div>"""
+                res['arch'] = res['arch'].decode('utf8').replace("""<separator string="to_replace"/>""", view_part)
+                field = self.fields_get([field_name])
+                fields.update(field)
+                res['fields'] = fields
+                res['fields'][field_name]['domain'] = [('id', 'in', object_ids)]
+                res['fields'][field_name]['required'] = True
         return res
 
     @api.multi

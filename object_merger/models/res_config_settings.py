@@ -24,7 +24,7 @@ class MergerConfigSettings(models.TransientModel):
         '''
         Initialization of the configuration
         '''
-        for vals in self.read(self.ids):
+        for vals in self.read([]):
             result = self.update_field(vals)
         return {
             'type': 'ir.actions.client',
@@ -68,16 +68,17 @@ class MergerConfigSettings(models.TransientModel):
         #FIX: si ningun modelo ha sido marcado anteriormente, no es necesario
         #hacer lo siguiente, agregando condicion
         if model_not_merge_ids:
-            modx_ids = self.env['ir.model'].browse(model_not_merge_ids)
+            modx_ids = model_not_merge_ids
             modx_ids.write({'object_merger_model': False})
         # Put all models which are selected to be an object_merger
         mod_ids = self.env['ir.model'].browse(model_ids)
         mod_ids.write({'object_merger_model': True})
         ### Create New Fields ###
         object_merger_ids = model_obj.search([('model', '=', 'object.merger')])
-        read_datas = model_obj.read(model_ids, ['model','name', 'object_merger_model'])
+        read_datas = mod_ids.read(['model','name', 'object_merger_model'])
         if not read_datas:
             read_datas = mod_ids
+        view_id = self.env.ref('object_merger.view_object_merge_form')
         for model in read_datas:
             field_name = 'x_' + model['model'].replace('.','_') + '_id'
             act_id = action_obj.suspend_security().create({
@@ -86,6 +87,7 @@ class MergerConfigSettings(models.TransientModel):
                 'res_model': 'object.merger',
                 'src_model': model['model'],
                 'view_type': 'form',
+                'view_id': view_id.id,
                 'context': "{'field_to_read':'%s'}" % field_name,
                 'view_mode': 'form',
                 'target': 'new'
