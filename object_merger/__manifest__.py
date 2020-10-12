@@ -3,7 +3,7 @@
 
 {
     'name': 'Fusionador de objetos',
-    'version': '1.1',
+    'version': '1.2',
     'category': 'Tools',
     'description': '''       
         Functionality:

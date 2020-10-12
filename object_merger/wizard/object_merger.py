@@ -12,9 +12,12 @@ class ObjectMerger(models.TransientModel):
     @api.model
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         '''
+        Inheritance to build on fly custom field view value
         '''
-        res = super(ObjectMerger, self).fields_view_get(view_id=view_id,
-                                                        view_type=view_type, toolbar=toolbar, submenu=False)
+        res = super(ObjectMerger, self).fields_view_get(
+            view_id=view_id, view_type=view_type, toolbar=toolbar,
+            submenu=False
+        )
         if view_type == 'form':
             object_ids = self.env.context.get('active_ids', [])
             active_model = self.env.context.get('active_model')

@@ -107,7 +107,7 @@ class MergerConfigSettings(models.TransientModel):
                     'relation': model['model'],
                     'field_description': "%s " % model['name'] + _('to keep'),
                     'state': 'manual',
-                    'ttype': 'many2one'
+                    'ttype': 'many2one',
                 }
                 field_obj.sudo().create(field_data)
         return True
