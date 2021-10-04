@@ -33,6 +33,7 @@ class Module(models.Model):
 
         2020-07-17: Se agrega un segundo bypass basado en whitelist, de esta manera se controla
                     modulos permitidos de instalacion sin necesidad de consultarlo
+        2021-10-04: Agregado el modulo product_brand
         """
         white_list_module = (
             'proyectox_landed_costs',
@@ -44,7 +45,8 @@ class Module(models.Model):
             'ecua_account_analitic',
             'web_environment_ribbon',
             'ecua_ecommerce',
-            'mail_outbound_static'
+            'mail_outbound_static',
+            'product_brand'
             )
         if self.name in white_list_module:
             # Esta seccion funciona en la instalacion
