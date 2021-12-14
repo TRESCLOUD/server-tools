@@ -1,6 +1,10 @@
 # generated from manifests external_dependencies
 astor
+acme
+cryptography
 dataclasses
+dnspython
+josepy
 lxml
 mako
 odoorpc
