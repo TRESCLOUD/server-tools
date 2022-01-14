@@ -33,7 +33,7 @@ class ObjectMerger(models.TransientModel):
         return res
 
     @api.multi
-    def check_for_followers(self, object_ids):
+    def check_for_followers(self, partner_ids):
         """
         Se encarga de un caso especifico que tiene que ver
         con los seguidores de un documento, la logica es la siguiente:
@@ -42,7 +42,8 @@ class ObjectMerger(models.TransientModel):
         lo que haremos será eliminar uno de los followers que será el que
         no se seleccione en el wizard para que se mantenga
         """
-        partner_ids = object_ids
+        if self.x_res_partner_id.id in partner_ids:
+            partner_ids.remove(self.x_res_partner_id.id)
         if partner_ids:
             query = '''
                 select mf.res_id, mf.res_model, array_agg(mf.partner_id) as partner_ids
@@ -50,28 +51,58 @@ class ObjectMerger(models.TransientModel):
                 where partner_id is not null and partner_id in %s
                 group by mf.res_id, mf.res_model
             '''
-            self.env.cr.execute(query, (tuple(partner_ids),))
+            self.env.cr.execute(query, (tuple(partner_ids + [self.x_res_partner_id.id]),))
             lines = self.env.cr.dictfetchall()
 
-            lines = dict(map(lambda x: ((x['res_id'], x['res_model']), x['partner_ids']),
-                             lines))
-            # El partner que permanece lo tomamos del campos
-            # que se contruye al fly en al field_view_get
-            partner_to_keep = self.x_res_partner_id.id
-            xpartner_ids = [partner for partner in partner_ids if partner != partner_to_keep]
-            #partner_ids.remove(partner_to_keep)
             for line in lines:
-                # Si entro es que en este registro los partners a mezclar son seguidores
-                for partner in xpartner_ids:
-                    if partner in lines[line]:
-                        mail_follower_to_unlink = self.env['mail.followers'].search(
-                            [
-                                ('res_id', '=', line[0]),
-                                ('res_model', '=', line[1]),
-                                ('partner_id', '=', partner),
-                            ]
-                        )
-                        mail_follower_to_unlink.suspend_security().unlink()
+                if self.x_res_partner_id.id in line['partner_ids'] and len(line['partner_ids']) > 1:
+                    to_remove_partners = line['partner_ids']
+                    to_remove_partners.remove(self.x_res_partner_id.id)
+                    mail_follower_to_unlink = self.env['mail.followers'].search(
+                        [
+                            ('res_id', '=', line['res_id']),
+                            ('res_model', '=', line['res_model']),
+                            ('partner_id', 'in', to_remove_partners),
+                        ]
+                    )
+                    mail_follower_to_unlink.suspend_security().unlink()
+
+    @api.multi
+    def check_for_mail_notification(self, partner_ids):
+        """
+        La misma logica del metodo check_for_followers pero para mail notification
+        """
+        if self.x_res_partner_id.id in partner_ids:
+            partner_ids.remove(self.x_res_partner_id.id)
+        if partner_ids:
+            query = '''
+                select mn.mail_message_id, array_agg(mn.res_partner_id) as partner_ids
+                from mail_message_res_partner_needaction_rel mn
+                where mn.res_partner_id is not null and mn.res_partner_id in %s
+                group by mn.mail_message_id
+            '''
+            self.env.cr.execute(query, (tuple(partner_ids + [self.x_res_partner_id.id]),))
+            lines = self.env.cr.dictfetchall()
+
+            for line in lines:
+                if self.x_res_partner_id.id in line['partner_ids'] and len(line['partner_ids']) > 1:
+                    to_remove_partners = line['partner_ids']
+                    to_remove_partners.remove(self.x_res_partner_id.id)
+                    mail_notification_to_unlink = self.env['mail.notification'].search(
+                        [
+                            ('mail_message_id', '=', line['mail_message_id']),
+                            ('res_partner_id', 'in', to_remove_partners),
+                        ]
+                    )
+                    mail_notification_to_unlink.suspend_security().unlink()
+
+    @api.multi
+    def check_for_other_objects(self, partner_ids):
+        """
+        La misma logica del metodo check_for_followers pero para otros no tan importantes
+        """
+        if self.env['ir.module.module'].search([('name', '=', 'crm')]).state == 'installed':
+            self.env['base.partner.merge.automatic.wizard'].search([]).unlink()
 
     @api.multi
     def action_merge(self):
@@ -92,6 +123,8 @@ class ObjectMerger(models.TransientModel):
         # Agregamos la validacion para los seguidores
         if model_pool == self.env['res.partner']:
             self.check_for_followers(object_ids)
+            self.check_for_mail_notification(object_ids)
+            self.check_for_other_objects(object_ids)
 
         if self.env.context.get('origin', False) \
                 != 'ecua_fiscal_positions_core':
@@ -168,7 +201,7 @@ class ObjectMerger(models.TransientModel):
                         requete = "UPDATE "+model+" SET "+name+"="+\
                                   str(object_id)+" WHERE "+ \
                                   ustr(name) +" IN " + \
-                                  str(tuple(object_ids)) + ";"
+                                  str(tuple(object_ids) if len(object_ids) > 1 else '(%s)' % object_ids[0]) + ";"
                         self.env.cr.execute(requete)
         self.env.cr.execute("select name, model from ir_model_fields where "
                             "relation=%s and ttype in ('many2many');", (active_model,))
@@ -185,7 +218,7 @@ class ObjectMerger(models.TransientModel):
                 rel2 = field_data.column2
                 requete = "UPDATE "+model_m2m+" SET "+\
                           rel2+"="+str(object_id)+" WHERE "+ \
-                          ustr(rel2) +" IN " + str(tuple(object_ids)) + ";"
+                          ustr(rel2) +" IN " + str(tuple(object_ids) if len(object_ids) > 1 else '(%s)' % object_ids[0]) + ";"
                 self.env.cr.execute(requete)
         unactive_object_ids = model_pool.search([('id', 'in', object_ids),('id', '<>', object_id)])
         context = self.env.context.copy()
@@ -201,11 +234,11 @@ class ObjectMerger(models.TransientModel):
         for id in unactive_object_ids:
             list.append(self.env.context.get('active_model')+','+str(id.id))
         self.env.cr.execute('''
-                    UPDATE ir_property SET value_reference = %s 
-                    WHERE value_reference IN %s''', 
+                    UPDATE ir_property SET value_reference = %s
+                    WHERE value_reference IN %s''',
                     tuple([self.env.context.get('active_model')+','+str(object_id), tuple(list)]))
         return {'type': 'ir.actions.act_window_close'}
-    
+
     #Columns
     name = odoo_fields.Char('Name', size=16,
                             help='')
