@@ -1,5 +1,10 @@
 # generated from manifests external_dependencies
+acme
+cryptography
 dataclasses
+dnspython
+josepy
+lxml
 mako
 odoorpc
 openupgradelib
