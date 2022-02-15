@@ -3,13 +3,18 @@
 # Raphaël Reverdy <raphael.reverdy@akretion.com>
 # Copyright 2020 Camptocamp SA (http://www.camptocamp.com)
 # Simone Orsi <simahawk@gmail.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from odoo import api, fields, models
+import logging
+
+from odoo import api, fields, models, tools
 from odoo.exceptions import UserError
+from odoo.tools.misc import format_duration
 from odoo.tools.translate import _
 
 from .utils import convert_simple_to_full_parser
+
+_logger = logging.getLogger(__name__)
 
 
 class Base(models.AbstractModel):
@@ -57,9 +62,7 @@ class Base(models.AbstractModel):
     @api.model
     def _add_json_key(self, values, json_key, value):
         """To manage defaults, you can use a specific resolver."""
-        key_marshaller = json_key.split("=")
-        key = key_marshaller[0]
-        marshaller = key_marshaller[1] if len(key_marshaller) > 1 else None
+        key, sep, marshaller = json_key.partition("=")
         if marshaller == "list":  # sublist field
             if not values.get(key):
                 values[key] = []
@@ -69,18 +72,48 @@ class Base(models.AbstractModel):
 
     @api.model
     def _jsonify_record(self, parser, rec, root):
-        """Jsonify one record (rec). Private function called by jsonify."""
+        """JSONify one record (rec). Private function called by jsonify."""
+        strict = self.env.context.get("jsonify_record_strict", False)
         for field in parser:
             field_dict, subparser = rec.__parse_field(field)
             field_name = field_dict["name"]
+            if field_name not in rec._fields:
+                if strict:
+                    # let it fail
+                    rec._fields[field_name]  # pylint: disable=pointless-statement
+                if not tools.config["test_enable"]:
+                    # If running live, log proper error
+                    # so that techies can track it down
+                    _logger.error(
+                        "%(model)s.%(fname)s not available",
+                        {"model": self._name, "fname": field_name},
+                    )
+                continue
             json_key = field_dict.get("target", field_name)
             field = rec._fields[field_name]
             if field_dict.get("function"):
                 function = field_dict["function"]
-                value = self._function_value(rec, function, field_name)
+                try:
+                    value = self._function_value(rec, function, field_name)
+                except UserError:
+                    if strict:
+                        raise
+                    if not tools.config["test_enable"]:
+                        _logger.error(
+                            "%(model)s.%(func)s not available",
+                            {"model": self._name, "func": str(function)},
+                        )
+                    continue
             elif subparser:
                 if not (field.relational or field.type == "reference"):
-                    self._jsonify_bad_parser_error(field_name)
+                    if strict:
+                        self._jsonify_bad_parser_error(field_name)
+                    if not tools.config["test_enable"]:
+                        _logger.error(
+                            "%(model)s.%(fname)s not relational",
+                            {"model": self._name, "fname": field_name},
+                        )
+                    continue
                 value = [
                     self._jsonify_record(subparser, r, {}) for r in rec[field_name]
                 ]
@@ -108,11 +141,11 @@ class Base(models.AbstractModel):
                 ('line_id', ['id', ('product_id', ['name']), 'price_unit'])
             ]
 
-        In order to be consistent with the odoo api the jsonify method always
-        return a list of object even if there is only one element in input.
+        In order to be consistent with the Odoo API the jsonify method always
+        returns a list of objects even if there is only one element in input.
         You can change this behavior by passing `one=True` to get only one element.
 
-        By default the key into the json is the name of the field extracted
+        By default the key into the JSON is the name of the field extracted
         from the model. If you need to specify an alternate name to use as
         key, you can define your mapping as follow into the parser definition:
 
@@ -135,8 +168,11 @@ class Base(models.AbstractModel):
             for record, json in zip(records, results):
                 self._jsonify_record(parsers[lang], record, json)
 
-        results = resolver.resolve(results, self) if resolver else results
+        if resolver:
+            results = resolver.resolve(results, self)
         return results[0] if one else results
+
+    # HELPERS
 
     def _jsonify_m2o_to_id(self, fname):
         """Helper to get an ID only from a m2o field.
@@ -149,3 +185,26 @@ class Base(models.AbstractModel):
 
         """
         return self[fname].id
+
+    def _jsonify_x2m_to_ids(self, fname):
+        """Helper to get a list of IDs only from a o2m or m2m field.
+
+        Example:
+
+            <field name="name">m2m_ids</field>
+            <field name="target">m2m_ids:rel_ids</field>
+            <field name="instance_method_name">_jsonify_x2m_to_ids</field>
+
+        """
+        return self[fname].ids
+
+    def _jsonify_format_duration(self, fname):
+        """Helper to format a Float-like duration to string 00:00.
+
+        Example:
+
+            <field name="name">duration</field>
+            <field name="instance_method_name">_jsonify_format_duration</field>
+
+        """
+        return format_duration(self[fname])

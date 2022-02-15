@@ -1,16 +1,17 @@
 # Copyright 2017 ACSONE SA/NV
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo.exceptions import ValidationError
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import SavepointCase
 
 
-class TestIrExportsLine(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.ir_export = self.env.ref("base_jsonify.ir_exp_partner")
+class TestIrExportsLine(SavepointCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.ir_export = cls.env.ref("base_jsonify.ir_exp_partner")
 
-    def test_target_contrains(self):
+    def test_target_constrains(self):
         ir_export_lines_model = self.env["ir.exports.line"]
         with self.assertRaises(ValidationError):
             # The field into the name must be also into the target

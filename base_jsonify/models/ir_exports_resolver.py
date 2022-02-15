@@ -1,5 +1,5 @@
 # Copyright 2020 ACSONE SA/NV
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import fields, models
 from odoo.tools.safe_eval import safe_eval
@@ -11,7 +11,7 @@ help_message = [
     ":param value: value of the field",
     ":param field_type: type of the field",
     "For global resolvers:",
-    ":param value: json dict",
+    ":param value: JSON dict",
     ":param record: the record",
 ]
 

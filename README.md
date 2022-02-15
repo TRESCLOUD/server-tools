@@ -23,13 +23,15 @@ addon | version | maintainers | summary
 [auditlog](auditlog/) | 14.0.1.2.0 |  | Audit Log
 [auto_backup](auto_backup/) | 14.0.1.0.0 |  | Backups database
 [autovacuum_message_attachment](autovacuum_message_attachment/) | 14.0.1.0.0 |  | Automatically delete old mail messages and attachments
-[base_changeset](base_changeset/) | 14.0.1.0.0 | [![astirpe](https://github.com/astirpe.png?size=30px)](https://github.com/astirpe) | Track record changesets
+[base_changeset](base_changeset/) | 14.0.1.1.0 | [![astirpe](https://github.com/astirpe.png?size=30px)](https://github.com/astirpe) | Track record changesets
 [base_cron_exclusion](base_cron_exclusion/) | 14.0.1.0.0 | [![LoisRForgeFlow](https://github.com/LoisRForgeFlow.png?size=30px)](https://github.com/LoisRForgeFlow) | Allow you to select scheduled actions that should not run simultaneously.
+[base_custom_info](base_custom_info/) | 14.0.1.0.1 |  | Add custom field in models
 [base_exception](base_exception/) | 14.0.1.1.0 |  | This module provide an abstract model to manage customizable exceptions to be applied on different models (sale order, invoice, ...)
-[base_jsonify](base_jsonify/) | 14.0.1.2.0 |  | Base module that provide the jsonify method on all models
+[base_jsonify](base_jsonify/) | 14.0.1.5.0 |  | Base module that provide the jsonify method on all models
 [base_kanban_stage](base_kanban_stage/) | 14.0.1.0.0 |  | Provides stage model and abstract logic for inheritance
 [base_kanban_stage_state](base_kanban_stage_state/) | 14.0.1.0.0 |  | Maps stages from base_kanban_stage to states
 [base_m2m_custom_field](base_m2m_custom_field/) | 14.0.1.1.0 |  | Customizations of Many2many
+[base_model_restrict_update](base_model_restrict_update/) | 14.0.1.0.0 |  | Update Restrict Model
 [base_name_search_improved](base_name_search_improved/) | 14.0.1.0.0 |  | Friendlier search when typing in relation fields
 [base_name_search_multi_lang](base_name_search_multi_lang/) | 14.0.1.0.0 | [![kittiu](https://github.com/kittiu.png?size=30px)](https://github.com/kittiu) | Name search by multiple active language
 [base_remote](base_remote/) | 14.0.1.0.0 |  | Remote Base
@@ -38,8 +40,10 @@ addon | version | maintainers | summary
 [base_sequence_option](base_sequence_option/) | 14.0.1.0.0 | [![kittiu](https://github.com/kittiu.png?size=30px)](https://github.com/kittiu) | Alternative sequence options for specific models
 [base_sparse_field_list_support](base_sparse_field_list_support/) | 14.0.1.0.1 |  | add list support to convert_to_cache()
 [base_technical_user](base_technical_user/) | 14.0.1.0.0 |  | Add a technical user parameter on the company
-[base_time_window](base_time_window/) | 14.0.1.0.0 |  | Base model to handle time windows
+[base_time_window](base_time_window/) | 14.0.1.0.1 |  | Base model to handle time windows
+[base_video_link](base_video_link/) | 14.0.1.1.1 |  | Add the possibility to link video on record
 [base_view_inheritance_extension](base_view_inheritance_extension/) | 14.0.1.1.0 |  | Adds more operators for view inheritance
+[bus_alt_connection](bus_alt_connection/) | 14.0.1.0.0 |  | Needed when using PgBouncer as a connection pooler
 [configuration_helper](configuration_helper/) | 14.0.1.0.0 |  | Configuration Helper
 [datetime_formatter](datetime_formatter/) | 14.0.1.0.0 |  | Helper functions to give correct format to date[time] fields
 [dbfilter_from_header](dbfilter_from_header/) | 14.0.1.0.0 |  | Filter databases with HTTP headers
@@ -53,18 +57,19 @@ addon | version | maintainers | summary
 [iap_alternative_provider](iap_alternative_provider/) | 14.0.1.0.0 | [![sebastienbeau](https://github.com/sebastienbeau.png?size=30px)](https://github.com/sebastienbeau) | Base module for providing alternative provider for iap apps
 [letsencrypt](letsencrypt/) | 14.0.1.0.0 |  | Request SSL certificates from letsencrypt.org
 [module_auto_update](module_auto_update/) | 14.0.1.0.1 |  | Automatically update Odoo modules
-[module_change_auto_install](module_change_auto_install/) | 14.0.1.0.2 | [![legalsylvain](https://github.com/legalsylvain.png?size=30px)](https://github.com/legalsylvain) | Customize auto installables modules by configuration
+[module_change_auto_install](module_change_auto_install/) | 14.0.1.0.3 | [![legalsylvain](https://github.com/legalsylvain.png?size=30px)](https://github.com/legalsylvain) | Customize auto installables modules by configuration
+[module_prototyper](module_prototyper/) | 14.0.1.0.0 |  | Prototype your module.
 [onchange_helper](onchange_helper/) | 14.0.1.0.0 |  | Technical module that ease execution of onchange in Python code
 [scheduler_error_mailer](scheduler_error_mailer/) | 14.0.1.0.0 |  | Scheduler Error Mailer
-[sentry](sentry/) | 14.0.1.0.1 |  | Report Odoo errors to Sentry
+[sentry](sentry/) | 14.0.1.0.2 |  | Report Odoo errors to Sentry
 [sequence_python](sequence_python/) | 14.0.1.0.0 |  | Calculate a sequence number from a Python expression
 [slow_statement_logger](slow_statement_logger/) | 14.0.1.0.1 |  | Log slow SQL statements
 [sql_export](sql_export/) | 14.0.1.1.0 |  | Export data in csv file with SQL requests
 [sql_export_excel](sql_export_excel/) | 14.0.1.1.0 |  | Allow to export a sql query to an excel file.
 [sql_export_mail](sql_export_mail/) | 14.0.1.0.0 |  | Send csv file generated by sql query by mail.
 [sql_request_abstract](sql_request_abstract/) | 14.0.1.1.0 | [![legalsylvain](https://github.com/legalsylvain.png?size=30px)](https://github.com/legalsylvain) | Abstract Model to manage SQL Requests
-[test_base_time_window](test_base_time_window/) | 14.0.1.0.0 |  | Test Base model to handle time windows
-[upgrade_analysis](upgrade_analysis/) | 14.0.2.1.1 |  | Performs a difference analysis between modules installed on two different Odoo instances
+[test_base_time_window](test_base_time_window/) | 14.0.1.0.1 |  | Test Base model to handle time windows
+[upgrade_analysis](upgrade_analysis/) | 14.0.2.2.0 |  | Performs a difference analysis between modules installed on two different Odoo instances
 
 [//]: # (end addons)
 

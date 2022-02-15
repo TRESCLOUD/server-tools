@@ -163,6 +163,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_crm_stage__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_crm_tag__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_crm_team__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_custom_info__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_custom_info_category__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_custom_info_option__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_custom_info_property__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_custom_info_template__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_custom_info_value__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_db_backup__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_decimal_precision__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_digest_digest__assigned_attachment_ids
@@ -273,6 +279,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_mail_thread_phone__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_mail_tracking_value__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_mail_wizard_invite__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_module_prototyper__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_module_prototyper_api_version__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_module_prototyper_module_export__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_payment_acquirer__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_payment_acquirer_onboarding_wizard__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_payment_icon__assigned_attachment_ids
@@ -402,6 +411,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_utm_tag__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_vacuum_rule__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_validate_account_move__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_video_link_mixin__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_video_provider__assigned_attachment_ids
+#: model:ir.model.fields,field_description:autovacuum_message_attachment.field_video_video__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_web_editor_assets__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_web_editor_converter_test_sub__assigned_attachment_ids
 #: model:ir.model.fields,field_description:autovacuum_message_attachment.field_web_tour_tour__assigned_attachment_ids
