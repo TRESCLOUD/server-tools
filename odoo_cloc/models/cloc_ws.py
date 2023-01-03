@@ -24,3 +24,13 @@ class ClocWS(AbstractModel):
         except Exception:
             msg["maintenance"]["errors"] = ['cloc/error']
         return msg
+
+    @api.model
+    def run_cloc_report(self, database, path, verbose):
+        c = cloc.Cloc()
+        if database:
+            c.count_database(database)
+        if path:
+            for i in path:
+                c.count_path(i)
+        c.report(verbose)
