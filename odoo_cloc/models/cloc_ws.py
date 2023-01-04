@@ -42,4 +42,4 @@ class ClocWS(AbstractModel):
         if path:
             for i in path:
                 c.count_path(i)
-        c.report(verbose, width=160)
+        return c.report(verbose, width=160, ws=True)

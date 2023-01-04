@@ -292,7 +292,9 @@ class Cloc(object):
     # Report
     #------------------------------------------------------
     # pylint: disable=W0141
-    def report(self, verbose=False, width=None):
+    def report(self, verbose=False, width=None, ws=False):
+        if ws:
+            result={}
         # Prepare format
         if not width:
             width = min(self.max_width, shutil.get_terminal_size()[0] - 24)
@@ -312,7 +314,10 @@ class Cloc(object):
         total = sum(self.total.values())
         code = sum(self.code.values())
         s += fmt.format(k='', lines=total, other=total - code, code=code)
-        print(s)
+        if ws:
+            result['result'] = s
+        else:
+            print(s)
 
         if self.excluded and verbose:
             ex = fmt.format(k="Excluded", lines="Line", other="Other", code="Code")
@@ -322,7 +327,10 @@ class Cloc(object):
                     code, total = self.excluded[m][i]
                     ex += fmt.format(k='    ' + i, lines=total, other=total - code, code=code)
             ex += hr
-            print(ex)
+            if ws:
+                result['excluded'] = ex
+            else:
+                print(ex)
 
         if self.errors:
             e = "\nErrors\n\n"
@@ -330,4 +338,9 @@ class Cloc(object):
                 e += "{}\n".format(m)
                 for i in sorted(self.errors[m]):
                     e += fmt.format(k='    ' + i, lines=self.errors[m][i], other='', code='')
-            print(e)
+            if ws:
+                result['error'] = e
+            else:
+                print(e)
+        if ws:
+            return result
