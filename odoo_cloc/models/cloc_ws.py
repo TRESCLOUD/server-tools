@@ -3,6 +3,10 @@
 from odoo import api
 from odoo.models import AbstractModel
 from odoo.addons.odoo_cloc.tools import cloc
+import logging
+
+
+_logger = logging.getLogger(__name__)
 
 class ClocWS(AbstractModel):
     _name = 'cloc.web.service'
@@ -27,6 +31,11 @@ class ClocWS(AbstractModel):
 
     @api.model
     def run_cloc_report(self, database, path=False, verbose=True):
+        """
+        Web Service que envia los datos procesados por cloc
+        Requiere el envio de los parametros solicitados, para su control se agrega logs
+        """
+        _logger.info('WS consultado: run_cloc_report, parametros entregados:\ndatabase=%s\npath=%s\nverbose=%s' % (database, path, verbose))
         c = cloc.Cloc()
         if database:
             c.count_database(database)
