@@ -26,7 +26,7 @@ class ClocWS(AbstractModel):
         return msg
 
     @api.model
-    def run_cloc_report(self, database, path, verbose):
+    def run_cloc_report(self, database, path=False, verbose=True):
         c = cloc.Cloc()
         if database:
             c.count_database(database)
