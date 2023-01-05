@@ -51,6 +51,7 @@ class Cloc(object):
         Hay un problema con varios archivos en python, la gramatica no es adecuada
         y falla su conteo, en este caso se da la opcion de usar un conteo diferente
         """
+        file_s = s
         s = s.strip() + "\n"
         total = s.count("\n")
         lines = set()
@@ -63,7 +64,7 @@ class Cloc(object):
         except Exception:
             if self.allow_alternate_count:
                 try:
-                    n_code = self.count_loc_py(s)
+                    n_code = self.count_loc_py(file_s)
                 except Exception as e:
                     return (-1, str(e))
                 else:
