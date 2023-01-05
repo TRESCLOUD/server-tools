@@ -32,6 +32,7 @@ class Cloc(object):
         self.errors = {}
         self.excluded = {}
         self.max_width = 70
+        self.allow_alternate_count=False
 
     #------------------------------------------------------
     # Parse
@@ -46,17 +47,52 @@ class Cloc(object):
         return s.count("\n"), total
 
     def parse_py(self, s):
+        """
+        Hay un problema con varios archivos en python, la gramatica no es adecuada
+        y falla su conteo, en este caso se da la opcion de usar un conteo diferente
+        """
+        s = s.strip() + "\n"
+        total = s.count("\n")
+        lines = set()
         try:
-            s = s.strip() + "\n"
-            total = s.count("\n")
-            lines = set()
             for i in ast.walk(ast.parse(s)):
                 # we only count 1 for a long string or a docstring
                 if hasattr(i, 'lineno'):
                     lines.add(i.lineno)
             return len(lines), total
         except Exception:
-            return (-1, "Syntax Error")
+            if self.allow_alternate_count:
+                try:
+                    n_code = self.count_loc_py(s)
+                except Exception as e:
+                    return (-1, str(e))
+                else:
+                    return n_code, total
+            else:
+                return (-1, "Syntax Error")
+
+    def count_loc_py(self, s):
+        """
+        Basado en esta solucion: 
+        https://www.assembla.com/code/tahar/subversion/nodes
+        """
+        nb_lines  = 0
+        docstring = False
+        for line in s:
+            line = line.strip()
+            if line == "" \
+            or line.startswith("#") \
+            or docstring and not (line.startswith('"""') or line.startswith("'''"))\
+            or (line.startswith("'''") and line.endswith("'''") and len(line) >3)  \
+            or (line.startswith('"""') and line.endswith('"""') and len(line) >3) :
+                continue
+            # this is either a starting or ending docstring
+            elif line.startswith('"""') or line.startswith("'''"):
+                docstring = not docstring
+                continue
+            else:
+                nb_lines += 1
+        return nb_lines
 
     def parse_c_like(self, s, regex):
         # Based on https://stackoverflow.com/questions/241327

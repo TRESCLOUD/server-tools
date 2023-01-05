@@ -13,6 +13,11 @@ class ClocWS(AbstractModel):
 
     @api.model
     def get_cloc_data(self):
+        """
+        Web Service que envia los datos procesados de cloc similiar a lo que 
+        se envia a Odoo
+        """
+        _logger.info('WS consultado: get_cloc_data')        
         msg = {
             'maintenance': {
                 "version": cloc.VERSION,
@@ -20,6 +25,7 @@ class ClocWS(AbstractModel):
             }
         try:
             c = cloc.Cloc()
+            c.allow_alternate_count = True
             c.count_env(self.env)
             if c.code:
                 msg["maintenance"]["modules"] = c.code
@@ -30,13 +36,14 @@ class ClocWS(AbstractModel):
         return msg
 
     @api.model
-    def run_cloc_report(self, database, path=False, verbose=True):
+    def run_cloc_report(self, database, path=False, verbose=False):
         """
         Web Service que envia los datos procesados por cloc
         Requiere el envio de los parametros solicitados, para su control se agrega logs
         """
         _logger.info('WS consultado: run_cloc_report, parametros entregados:\ndatabase=%s\npath=%s\nverbose=%s' % (database, path, verbose))
         c = cloc.Cloc()
+        c.allow_alternate_count = True
         if database:
             c.count_database(database)
         if path:
