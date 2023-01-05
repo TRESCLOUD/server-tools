@@ -389,7 +389,7 @@ class Cloc(object):
             for repo in self.category_data_repository:
                 # para la busqueda por texto completamos el path con "/"
                 repo_name = "/" + repo + "/"
-                if repo in path:
+                if repo_name in path:
                     # el repositorio esta en el path, asignamos la categoria
                     self.category[module_name] = self.category_data_repository[repo]
                     break
