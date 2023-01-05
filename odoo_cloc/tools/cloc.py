@@ -380,6 +380,7 @@ class Cloc(object):
         Si un modulo no tiene categoria estara ubicado en "Extra"
         """
         no_category_name = 'Personalizado'
+        _logger.info('get_category_module variables:\npath:%s\nmodule_name:%s' % (path, module_name))
         # buscamos primero por modulo, si no lo encuentra usamos el path para el repositorio
         if module_name in self.category_data_module:
             self.category[module_name] = self.category_data_module[module_name]
@@ -393,7 +394,7 @@ class Cloc(object):
         if module_name not in self.category:
             # si no hay una categoria para este modulo, va a Personalizado
             self.category[module_name] = no_category_name
-        _logger.info('Categoria asiganada al modulo %s: %s' % (module_name, self.category[module_name]))
+        _logger.info('Categoria asignada al modulo %s: %s' % (module_name, self.category[module_name]))
 
 
     #------------------------------------------------------
