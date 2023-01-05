@@ -417,7 +417,8 @@ class Cloc(object):
         s = fmt.format(k="Odoo cloc", lines="Line", other="Other", code="Code")
         s += hr
         for m in sorted(self.modules):
-            s += fmt.format(k=m, lines=self.total[m], other=self.total[m]-self.code[m], code=self.code[m])
+            cat = self.category[m]
+            s += fmt.format(k=cat + " -> " + m, lines=self.total[m], other=self.total[m]-self.code[m], code=self.code[m])
             if verbose:
                 for i in sorted(self.modules[m], key=lambda i: self.modules[m][i][0], reverse=True):
                     code, total = self.modules[m][i]
