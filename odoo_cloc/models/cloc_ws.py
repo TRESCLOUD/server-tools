@@ -38,7 +38,7 @@ class ClocWS(AbstractModel):
         return msg
 
     @api.model
-    def run_cloc_report(self, database, path=False, verbose=False):
+    def run_cloc_report(self, database, path=False, verbose=False, width=120):
         """
         Web Service que envia los datos procesados por cloc
         Requiere el envio de los parametros solicitados, para su control se agrega logs
@@ -51,4 +51,4 @@ class ClocWS(AbstractModel):
         if path:
             for i in path:
                 c.count_path(i)
-        return c.report(verbose, width=160, ws=True)
+        return c.report(verbose, width=width, ws=True)
