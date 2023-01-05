@@ -79,6 +79,9 @@ class Cloc(object):
                     # se categoriza por repositorio
                     self.category_data_repository[line[repositorio]] = line[categoria]
 
+        _logger.info('contenido de la variable self.category_data_module: %s' % str(self.category_data_module))
+        _logger.info('contenido de la variable self.category_data_repository: %s' % str(self.category_data_repository))
+
     #------------------------------------------------------
     # Parse
     #------------------------------------------------------
@@ -390,6 +393,8 @@ class Cloc(object):
         if module_name not in self.category:
             # si no hay una categoria para este modulo, va a Personalizado
             self.category[module_name] = no_category_name
+        _logger.info('Categoria asiganada al modulo %s: %s' % (module_name, self.category[module_name]))
+
 
     #------------------------------------------------------
     # Report
