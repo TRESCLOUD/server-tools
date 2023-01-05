@@ -54,7 +54,9 @@ class Cloc(object):
         {'repositorio':'categoria','repositorio_1':'categoria'}
         """
         # abrimos el archivo csv
-        with open('../data/cloc_repository_category.csv', mode ='r') as file:
+        file_path = os.path.join(os.path.dirname(__file__), "../data/cloc_repository_category.csv")
+        _logger.info('Path del archivo CSV usado para analisis cloc: %s' % file_path)
+        with open(file_path, mode ='r') as file:
             # Procesamos como un csv
             csvFile = csv.reader(file)
         _logger.info('Data del archivo CSV usado para analisis cloc: %s' % str(csvFile))
