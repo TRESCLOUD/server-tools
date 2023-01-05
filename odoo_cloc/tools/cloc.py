@@ -5,6 +5,7 @@ import pathlib
 import os
 import re
 import shutil
+import csv
 
 import odoo
 from odoo.tools.config import config
@@ -36,7 +37,46 @@ class Cloc(object):
         self.errors = {}
         self.excluded = {}
         self.max_width = 70
-        self.allow_alternate_count=False
+        self.allow_alternate_count = False
+        self.category = {}
+        self.category_data_module = {}
+        self.category_data_repository = {}
+        self.read_csv_category()
+
+    def read_csv_category(self):
+        """
+        Lee el archivo csv de datos para categorizacion y lo carga como 2 variables para su uso
+        
+        Estructura category_data_module (si el modulo esta indicado):
+        {'modulo':'categoria','modulo_1':'categoria'}
+
+        Estructura category_data_repository (si el modulo es *):
+        {'repositorio':'categoria','repositorio_1':'categoria'}
+        """
+        # abrimos el archivo csv
+        with open('../data/cloc_repository_category.csv', mode ='r') as file:
+            # Procesamos como un csv
+            csvFile = csv.reader(file)
+        _logger.info('Data del archivo CSV usado para analisis cloc: %s' % str(csvFile))
+        # Identificamos cada columna para agregarla en cada variable
+        categoria = -1
+        repositorio = -1
+        modulo = -1
+        first_l = True
+        for line in csvFile:
+            if first_l:
+                # identifico las columnas
+                categoria = line.index('categoria')
+                repositorio = line.index('repositorio')
+                modulo = line.index('modulo')
+                first_l = False
+            # construyo las variables
+            if line[modulo] != '*':
+                # se categoriza por modulo
+                self.category_data_module[line[modulo]] = line[categoria]
+            else:
+                # se categoriza por repositorio
+                self.category_data_repository[line[repositorio]] = line[categoria]
 
     #------------------------------------------------------
     # Parse
@@ -173,6 +213,7 @@ class Cloc(object):
 
         module_name = os.path.basename(path)
         self.book(module_name)
+        self.get_category_module(path, module_name)
         for root, dirs, files in os.walk(path):
             for file_name in files:
                 file_path = os.path.join(root, file_name)
@@ -329,11 +370,32 @@ class Cloc(object):
             env = odoo.api.Environment(cr, uid, {})
             self.count_env(env)
 
+    def get_category_module(self, path, module_name):
+        """
+        Obtiene la categoria del modulo basado en el csv creado en data.
+        Si un modulo no tiene categoria estara ubicado en "Extra"
+        """
+        no_category_name = 'Personalizado'
+        # buscamos primero por modulo, si no lo encuentra usamos el path para el repositorio
+        if module_name in self.category_data_module:
+            self.category[module_name] = self.category_data_module[module_name]
+        else:
+        # no hay info por modulo, comparamos por repositorio
+            for repo in self.category_data_repository:
+                if repo in path:
+                    # el repositorio esta en el path, asignamos la categoria
+                    self.category[module_name] = self.category_data_repository[repo]
+                    break
+        if module_name not in self.category:
+            # si no hay una categoria para este modulo, va a Personalizado
+            self.category[module_name] = no_category_name
+
     #------------------------------------------------------
     # Report
     #------------------------------------------------------
     # pylint: disable=W0141
     def report(self, verbose=False, width=None, ws=False):
+        _logger.info('asignacion de categorias por modulo: %s' % str(self.category))
         if ws:
             result={}
         # Prepare format
