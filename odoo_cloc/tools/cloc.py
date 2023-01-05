@@ -59,26 +59,25 @@ class Cloc(object):
         with open(file_path, mode ='r') as file:
             # Procesamos como un csv
             csvFile = csv.reader(file)
-        _logger.info('Data del archivo CSV usado para analisis cloc: %s' % str(csvFile))
-        # Identificamos cada columna para agregarla en cada variable
-        categoria = -1
-        repositorio = -1
-        modulo = -1
-        first_l = True
-        for line in csvFile:
-            if first_l:
-                # identifico las columnas
-                categoria = line.index('categoria')
-                repositorio = line.index('repositorio')
-                modulo = line.index('modulo')
-                first_l = False
-            # construyo las variables
-            if line[modulo] != '*':
-                # se categoriza por modulo
-                self.category_data_module[line[modulo]] = line[categoria]
-            else:
-                # se categoriza por repositorio
-                self.category_data_repository[line[repositorio]] = line[categoria]
+            # Identificamos cada columna para agregarla en cada variable
+            categoria = -1
+            repositorio = -1
+            modulo = -1
+            first_l = True
+            for line in csvFile:
+                if first_l:
+                    # identifico las columnas
+                    categoria = line.index('categoria')
+                    repositorio = line.index('repositorio')
+                    modulo = line.index('modulo')
+                    first_l = False
+                # construyo las variables
+                if line[modulo] != '*':
+                    # se categoriza por modulo
+                    self.category_data_module[line[modulo]] = line[categoria]
+                else:
+                    # se categoriza por repositorio
+                    self.category_data_repository[line[repositorio]] = line[categoria]
 
     #------------------------------------------------------
     # Parse
