@@ -9,6 +9,10 @@ import shutil
 import odoo
 from odoo.tools.config import config
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
 VERSION = 1
 DEFAULT_EXCLUDE = [
     "__manifest__.py",
@@ -79,7 +83,7 @@ class Cloc(object):
         """
         nb_lines  = 0
         docstring = False
-        for line in s:
+        for line in s.split('\n'):
             line = line.strip()
             if line == "" \
             or line.startswith("#") \

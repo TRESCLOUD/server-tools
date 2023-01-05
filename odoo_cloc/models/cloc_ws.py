@@ -17,7 +17,7 @@ class ClocWS(AbstractModel):
         Web Service que envia los datos procesados de cloc similiar a lo que 
         se envia a Odoo
         """
-        _logger.info('WS consultado: get_cloc_data')        
+        _logger.info('WS consultado: get_cloc_data')
         msg = {
             'maintenance': {
                 "version": cloc.VERSION,
