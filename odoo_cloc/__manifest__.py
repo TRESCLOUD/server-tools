@@ -19,7 +19,9 @@ This module allow to count the line of extra module the same way odoo cloc do it
   -- enterprise (Odoo)
   -- odoo (Odoo)
   -- odoo-clientes-especificos (Client modules)
+     -- Added odoo-clientes-especificos/TRESCLOUD like TRESCLOUD category 
   -- odoo-modulos-comunidad (Client modules)
+     -- Added account_parent like TRESCLOUD category (l10n_ec depends on it)
 
 
 Authors:

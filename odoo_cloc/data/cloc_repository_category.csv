@@ -29,3 +29,5 @@ OCA,social,*
 OCA,stock-logistics-workflow,*
 OCA,web,*
 OCA,website,*
+TRESCLOUD,odoo-clientes-especificos/TRESCLOUD,*
+TRESCLOUD,*,account_parent
