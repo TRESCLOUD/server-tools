@@ -52,3 +52,35 @@ class ClocWS(AbstractModel):
             for i in path:
                 c.count_path(i)
         return c.report(verbose, width=width, ws=True)
+
+    @api.model
+    def run_cloc_resume_detail(self, database, path=False, verbose=False, width=120):
+        """
+        Web Service que envia los datos procesados por cloc resumido y detallado
+        Requiere el envio de los parametros solicitados, para su control se agrega logs
+        """
+        _logger.info('WS consultado: run_cloc_resume_detail, parametros entregados:\ndatabase=%s\npath=%s\nverbose=%s' % (database, path, verbose))
+        msg = {
+            'maintenance': {
+                "version": cloc.VERSION,
+                }
+            }
+        try:
+            c = cloc.Cloc()
+            c.allow_alternate_count = True
+            if database:
+                c.count_database(database)
+            if path:
+                for i in path:
+                    c.count_path(i)
+            msg["maintenance"]["detail"] = c.report(verbose, width=width, ws=True)        
+            if c.code:
+                msg["maintenance"]["modules"] = c.code
+            if c.category:
+                msg["maintenance"]["category"] = c.category
+            if c.errors:
+                msg["maintenance"]["errors"] = list(c.errors.keys())
+        except Exception:
+            msg["maintenance"]["errors"] = ['cloc/error']
+        return msg
+        
