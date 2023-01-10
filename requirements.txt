@@ -10,4 +10,3 @@ sqlalchemy
 raven
 checksumdir
 python-stdnum
-pathlib==1.0.1 # Requerido por odoo_cloc
