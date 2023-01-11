@@ -29,8 +29,6 @@ class ClocWS(AbstractModel):
             c.count_env(self.env)
             if c.code:
                 msg["maintenance"]["modules"] = c.code
-            if c.category:
-                msg["maintenance"]["category"] = c.category
             if c.errors:
                 msg["maintenance"]["errors"] = list(c.errors.keys())
         except Exception:
@@ -76,8 +74,6 @@ class ClocWS(AbstractModel):
             msg["maintenance"]["detail"] = c.report(verbose, width=width, ws=True)        
             if c.code:
                 msg["maintenance"]["modules"] = c.code
-            if c.category:
-                msg["maintenance"]["category"] = c.category
             if c.errors:
                 msg["maintenance"]["errors"] = list(c.errors.keys())
         except Exception:
