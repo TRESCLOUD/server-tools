@@ -12,18 +12,6 @@ This module allow to count the line of extra module the same way odoo cloc do it
 
 - Allow get this information and submit to other analysis tool using web services
 
-- Add categorization using repository and module level. If a module is not categorized automatically is set to "Personalizado" category
-  
-  Repositories not categorized in csv file:
-  -- Repo-Venezuela (Client modules)
-  -- enterprise (Odoo)
-  -- odoo (Odoo)
-  -- odoo-clientes-especificos (Client modules)
-     -- Added odoo-clientes-especificos/TRESCLOUD like TRESCLOUD category 
-  -- odoo-modulos-comunidad (Client modules)
-     -- Added account_parent like TRESCLOUD category (l10n_ec depends on it)
-
-
 Authors:
     Ing. Andres Calle
     Ing. Patricio Rangles
