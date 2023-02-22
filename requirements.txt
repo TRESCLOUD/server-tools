@@ -1,6 +1,6 @@
 # generated from manifests external_dependencies
 astor
-acme
+acme==1.31.0 # Let's encrypt tiene problemas con versiones superiores
 cryptography
 dataclasses
 dnspython
