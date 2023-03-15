@@ -207,12 +207,21 @@ class Cloc(object):
         module_list = env['ir.module.module'].search(domain).mapped('name')
 
         for module_name in module_list:
-            module_path = os.path.realpath(odoo.modules.get_module_path(module_name))
-            if module_path:
-                if any(module_path.startswith(i) for i in exclude_path):
-                    continue
-                self.count_path(module_path)
-
+            # 2023-03-15: Caso especial, modulos marcados como instalados
+            #             pero que no existen o que fueron borrados, esto se da
+            #             en clientes migrados de versiones anteriores.
+            #
+            # La solucion es ignorar estos modulos, no hay codigo para contar y 
+            # no tiene relevancia para el calculo de lineas
+            try:
+                module_path = os.path.realpath(odoo.modules.get_module_path(module_name))
+                if module_path:
+                    if any(module_path.startswith(i) for i in exclude_path):
+                        continue
+                    self.count_path(module_path)
+            except:
+                pass
+            
     def count_customization(self, env):
         imported_module_sa = ""
         if env['ir.module.module']._fields.get('imported'):
