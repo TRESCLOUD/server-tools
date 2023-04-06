@@ -29,6 +29,7 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
         index=True,
     )
     secret_key = fields.Char(
+        string='Secret Code',
         default=lambda s: pyotp.random_base32(),
         required=True,
     )
@@ -47,6 +48,7 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
              ' will be tied to',
         readonly=True,
         index=True,
+        ondelete='cascade',
     )
     confirmation_code = fields.Char(
         string='Confirmation Code',
@@ -73,7 +75,7 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
 
             totp = pyotp.TOTP(record.secret_key)
             provisioning_uri = totp.provisioning_uri(
-                record.user_id.display_name,
+                record.user_id.display_name.encode('utf-8'),
                 issuer_name=record.user_id.company_id.display_name,
             )
             provisioning_uri = urllib.quote(provisioning_uri)
