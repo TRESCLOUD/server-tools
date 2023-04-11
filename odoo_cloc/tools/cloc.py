@@ -215,7 +215,7 @@ class Cloc(object):
             #
             # La solucion es ignorar estos modulos, no hay codigo para contar y
             # no tiene relevancia para el calculo de lineas
-            if 1 == 1:
+            try:
                 _logger.info('Modulo analizado: %s' % module_name)
                 module_path = os.path.realpath(openerp.modules.get_module_path(module_name))
                 _logger.info('Path del modulo: %s' % module_path)
@@ -225,7 +225,7 @@ class Cloc(object):
                         continue
                     self.count_path(module_path)
                     _logger.info('Agregado a la lista a contar: %s\n' % module_path)
-            if 2 == 1:
+            except:
                 pass
 
     def count_customization(self, env):
