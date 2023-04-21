@@ -11,6 +11,8 @@
     "summary": "Visualizacion de logs de Odoo",
     "depends": ["base_setup"],
     'data': [
+        #Views
+        'views/res_company_view.xml',
         #Wizard
         'wizard/wizard_view_logs_view.xml',
     ],

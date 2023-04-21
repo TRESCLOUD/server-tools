@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 
 class ViewLogs(models.AbstractModel):
-    _name = "view_logs"
+    _name = "view.logs"
     _description = "Abstract model providing functions for view_logs"
 
     """
