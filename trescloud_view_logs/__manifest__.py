@@ -11,6 +11,8 @@
     "summary": "Visualizacion de logs de Odoo",
     "depends": ["base_setup"],
     'data': [
+        #Security
+        'security/ir.model.access.csv',
         #Views
         'views/res_company_view.xml',
         #Wizard
