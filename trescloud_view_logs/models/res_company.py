@@ -16,7 +16,6 @@ class Company(models.Model):
         Levanta el wizard de visualizacion de logs
         '''
         view = self.env.ref('trescloud_view_logs.wizard_view_logs_form')
-        _logger.info(u'vista encontrada: %s' % view)
         return {
             'view_type': 'form',
             'view_mode': 'form',

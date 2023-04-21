@@ -9,7 +9,7 @@ from odoo.tools import config
 _logger = logging.getLogger(__name__)
 
 
-class ViewLogs(models.AbstractModel):
+class ViewLogs(models.TransientModel):
     _name = "view.logs"
     _description = "Abstract model providing functions for view_logs"
 
