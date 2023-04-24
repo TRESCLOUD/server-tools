@@ -9,7 +9,7 @@
                     <group col="2" colspan="2">
                         <field name="tiempo" required="1"/>
                     </group>
-                    <label for="server_log"/>
+                    <label for="log_detail"/>
                     <div>
                         <field name="log_detail" nolabel="1" readonly="1"/>
                     </div>
