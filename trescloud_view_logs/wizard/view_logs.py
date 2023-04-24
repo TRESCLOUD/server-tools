@@ -82,6 +82,7 @@ class ViewLogs(models.TransientModel):
         #for line in self._reverseReadFile(open(log_file)):
         with FileReadBackwards(log_file, encoding="utf-8") as frb:
             for line in frb:
+                _logger.info(u'linea a anlizar: %s' % line)
                 # filtrado del log en caso multiples instancias
                 # lo filtramos por nombre de la base de datos
                 if not line:
