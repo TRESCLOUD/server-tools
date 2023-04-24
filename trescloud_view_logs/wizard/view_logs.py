@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import logging
 from datetime import datetime, timedelta
 
@@ -23,8 +24,16 @@ class ViewLogs(models.TransientModel):
     def _reverseReadFile(file, BLKSIZE = 4096):
         """Read a file line by line, backwards"""
         buf = ""
-        if( not file.seekable() ):
-            return
+        # depende la version de python, el metodo seekable existe en python 3.x
+        if sys.version[:2] == '2.':
+            try:
+                file.tell()
+            except:
+                # no se permite usar como stream
+                return
+        elif sys.version[:2] == '3.':
+            if( not file.seekable() ):
+                return
 
         file.seek(0, 2)
         lastchar = file.read(1)
