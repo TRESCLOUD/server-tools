@@ -65,7 +65,7 @@ class ViewLogs(models.TransientModel):
 
         """
         # extraigo la fecha
-        date_line = log_line[:16]
+        date_line = log_line[:15]
         # convierto a objeto
         log_date = datetime.strptime(date_line, '%b %d %H:%M:%S')
         return date1 > log_date
