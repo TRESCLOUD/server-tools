@@ -64,7 +64,7 @@ class ViewLogs(models.TransientModel):
 
         """
         # extraigo la fecha y le agrego el año actual
-        date_line = date1.year + " " + log_line[:15]
+        date_line = str(date1.year) + " " + log_line[:15]
         # convierto a objeto
         log_date = datetime.strptime(date_line, '%Y %b %d %H:%M:%S')
         #_logger.info(u'fechas a comparar, log_date %s, date1 %s' % (log_date, date1))
