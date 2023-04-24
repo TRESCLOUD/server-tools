@@ -138,7 +138,7 @@ class ViewLogs(models.TransientModel):
             'res_model': 'view.logs',
             'type': 'ir.actions.act_window',
             'nodestroy': True,
-            'target': 'self',
+            'target': 'new',
             'context': default
         }
 
