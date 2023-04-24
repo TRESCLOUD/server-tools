@@ -63,11 +63,11 @@ class ViewLogs(models.TransientModel):
         Apr 21 17:42:25 ip-172-31-53-98 odoo-15-trescloud[671]: 2023-04-21 17:42:25,278 101421 INFO ...
 
         """
-        # extraigo la fecha
-        date_line = log_line[:15]
+        # extraigo la fecha y le agrego el año actual
+        date_line = date1.year + " " + log_line[:15]
         # convierto a objeto
-        log_date = datetime.strptime(date_line, '%b %d %H:%M:%S')
-        _logger.info(u'fechas a comparar, log_date %s, date1 %s' % (log_date, date1))
+        log_date = datetime.strptime(date_line, '%Y %b %d %H:%M:%S')
+        #_logger.info(u'fechas a comparar, log_date %s, date1 %s' % (log_date, date1))
         return date1 > log_date
 
     def _get_latest_n_minutes_odoo_log(self, minutes):
@@ -113,6 +113,7 @@ class ViewLogs(models.TransientModel):
         Funcion que ejecuta la carga del log para mostrarlo en campo tipo texto
         """
         self.log_detail = '\n'.join(self._get_latest_n_minutes_odoo_log(int(self.tiempo)))
+        _logger.info(u'Numero de lineas obtenidas: %s' % len(self.log_detail))
         return True
 
 
