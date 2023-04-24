@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-import sys
-import logging
+from file_read_backwards import FileReadBackwards
 from datetime import datetime, timedelta
 
 from odoo import models, fields
 from odoo.exceptions import UserError
-from odoo.tools import config
 
+import logging
 _logger = logging.getLogger(__name__)
 
 
@@ -21,37 +20,37 @@ class ViewLogs(models.TransientModel):
     https://code.activestate.com/recipes/439045-read-a-text-file-backwards-yet-another-implementat/
     """
 
-    def _reverseReadFile(self, file, BLKSIZE = 4096):
-        """Read a file line by line, backwards"""
-        if( not file.seekable() ):
-            return
+    # def _reverseReadFile(self, file, BLKSIZE = 4096):
+    #     """Read a file line by line, backwards"""
+    #     if( not file.seekable() ):
+    #         return
 
-        buf = ""
-        file.seek(0, 2)
-        lastchar = file.read(1)
-        trailing_newline = (lastchar == "\n")
+    #     buf = ""
+    #     file.seek(0, 2)
+    #     lastchar = file.read(1)
+    #     trailing_newline = (lastchar == "\n")
 
-        while 1:
-            newline_pos = buf.rfind("\n")
-            pos = file.tell()
-            if newline_pos != -1:
-                # Found a newline
-                line = buf[newline_pos+1:]
-                buf = buf[:newline_pos]
-                if pos or newline_pos or trailing_newline:
-                    line += "\n"
-                yield line
-            elif pos:
-                # Need to fill buffer
-                toread = min(BLKSIZE, pos)
-                file.seek(pos-toread, 0)
-                buf = file.read(toread) + buf
-                file.seek(pos-toread, 0)
-                if pos == toread:
-                    buf = "\n" + buf
-            else:
-                # Start-of-file
-                return
+    #     while 1:
+    #         newline_pos = buf.rfind("\n")
+    #         pos = file.tell()
+    #         if newline_pos != -1:
+    #             # Found a newline
+    #             line = buf[newline_pos+1:]
+    #             buf = buf[:newline_pos]
+    #             if pos or newline_pos or trailing_newline:
+    #                 line += "\n"
+    #             yield line
+    #         elif pos:
+    #             # Need to fill buffer
+    #             toread = min(BLKSIZE, pos)
+    #             file.seek(pos-toread, 0)
+    #             buf = file.read(toread) + buf
+    #             file.seek(pos-toread, 0)
+    #             if pos == toread:
+    #                 buf = "\n" + buf
+    #         else:
+    #             # Start-of-file
+    #             return
 
     def _compare_date_time_on_log_line(self, date1, log_line):
         """
@@ -79,18 +78,20 @@ class ViewLogs(models.TransientModel):
         log_file = "/var_log/odoo.log"
         until_date = datetime.now() - timedelta(minutes=minutes)
         db_name = self._cr.dbname
-        for line in self._reverseReadFile(open(log_file)):
-            # filtrado del log en caso multiples instancias
-            # lo filtramos por nombre de la base de datos
-            _logger.info(u'Linea de log bajo analisis: %s' % line)
-            if not line:
-                pass
-            if db_name in line:
-                if self._compare_date_time_on_log_line(until_date, line):
-                    data_extract.append(line)
-                else:
-                    # esta parte del log ya no se requiere
-                    break
+        #for line in self._reverseReadFile(open(log_file)):
+        with FileReadBackwards(log_file, encoding="utf-8") as frb:
+            for line in frb:
+                # filtrado del log en caso multiples instancias
+                # lo filtramos por nombre de la base de datos
+                _logger.info(u'Linea de log bajo analisis: %s' % line)
+                if not line:
+                    pass
+                if db_name in line:
+                    if self._compare_date_time_on_log_line(until_date, line):
+                        data_extract.append(line)
+                    else:
+                        # esta parte del log ya no se requiere
+                        break
         return data_extract
 
     def _get_log_from_to_especific_date(self, start_datetime, stop_datetime):
