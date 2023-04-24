@@ -67,7 +67,7 @@ class ViewLogs(models.TransientModel):
         date_line = str(date1.year) + " " + log_line[:15]
         # convierto a objeto
         log_date = datetime.strptime(date_line, '%Y %b %d %H:%M:%S')
-        #_logger.info(u'fechas a comparar, log_date %s, date1 %s' % (log_date, date1))
+        _logger.info(u'fechas a comparar, log_date %s, date1 %s' % (log_date, date1))
         return log_date > date1
 
     def _get_latest_n_minutes_odoo_log(self, minutes):
@@ -79,6 +79,7 @@ class ViewLogs(models.TransientModel):
         log_file = "/var_log/odoo.log"
         until_date = datetime.now() - timedelta(minutes=minutes)
         db_name = self._cr.dbname
+        _logger.info(u'Base a buscar: %s, fecha tope: %s'  % (db_name, until_date))
         #for line in self._reverseReadFile(open(log_file)):
         with FileReadBackwards(log_file, encoding="utf-8") as frb:
             for line in frb:
@@ -89,6 +90,7 @@ class ViewLogs(models.TransientModel):
                     # linea vacia, no la tomo en cuenta
                     pass
                 if db_name in line:
+                    _logger.info(u'Linea tiene el nombre de labse de datos: %s' % db_name)
                     if self._compare_date_time_on_log_line(until_date, line):
                         data_extract.append(line)
                         _logger.info(u'Linea agregada: %s' % line)
