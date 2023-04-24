@@ -78,7 +78,7 @@ class ViewLogs(models.TransientModel):
         log_file = "/var_log/odoo.log"
         until_date = datetime.now() - timedelta(minutes=minutes)
         db_name = self._cr.dbname
-        for line in self._reverseReadFile(log_file):
+        for line in self._reverseReadFile(open(log_file)):
             # filtrado del log en caso multiples instancias
             # lo filtramos por nombre de la base de datos
             _logger.info(u'Linea de log bajo analisis: %s' % line)
