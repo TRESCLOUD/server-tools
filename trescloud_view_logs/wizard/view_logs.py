@@ -67,6 +67,7 @@ class ViewLogs(models.TransientModel):
         date_line = log_line[:15]
         # convierto a objeto
         log_date = datetime.strptime(date_line, '%b %d %H:%M:%S')
+        _logger.info(u'fechas a comparar, log_date %s, date1 %s' % (log_date, date1))
         return date1 > log_date
 
     def _get_latest_n_minutes_odoo_log(self, minutes):
@@ -83,8 +84,8 @@ class ViewLogs(models.TransientModel):
             for line in frb:
                 # filtrado del log en caso multiples instancias
                 # lo filtramos por nombre de la base de datos
-                _logger.info(u'Linea de log bajo analisis: %s' % line)
                 if not line:
+                    # linea vacia, no la tomo en cuenta
                     pass
                 if db_name in line:
                     if self._compare_date_time_on_log_line(until_date, line):

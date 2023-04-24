@@ -21,6 +21,6 @@
     "demo": [],
     "installable": True,
     "external_dependencies": {
-        "python": []
+        "python": ['file_read_backwards']
     },
 }
