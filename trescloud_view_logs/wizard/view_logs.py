@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class ViewLogs(models.TransientModel):
     _name = "view.logs"
-    _description = "Abstract model providing functions for view_logs"
+    _description = "Abstract model providing functions for view.logs"
 
     """
     Clase creada para leer logs en reversa desde python
