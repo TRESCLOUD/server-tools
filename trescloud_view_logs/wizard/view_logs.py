@@ -117,9 +117,10 @@ class ViewLogs(models.TransientModel):
         Funcion que ejecuta la carga del log para mostrarlo en campo tipo texto
         """
         data_extract = self._get_latest_n_minutes_odoo_log(int(self.tiempo))
+        # leo el resultado en el orden original
+        data_extract.reverse()
         _logger.info(u'Numero de lineas obtenidas: %s' % len(data_extract))
         log_data = '\n'.join(data_extract)
-        #self.log_detail = log_data
         # levanto el mismo wizard con el texto obtenido
         '''
         Levanta el wizard de visualizacion de logs
@@ -138,7 +139,8 @@ class ViewLogs(models.TransientModel):
             'res_model': 'view.logs',
             'type': 'ir.actions.act_window',
             'nodestroy': True,
-            'target': 'new',
+            #'target': 'new',
+            'target': 'self',
             'context': default
         }
 
