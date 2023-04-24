@@ -12,7 +12,7 @@
     "depends": ["base_setup"],
     'data': [
         #Security
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         #Views
         'views/res_company_view.xml',
         #Wizard
