@@ -83,17 +83,17 @@ class ViewLogs(models.TransientModel):
         #for line in self._reverseReadFile(open(log_file)):
         with FileReadBackwards(log_file, encoding="utf-8") as frb:
             for line in frb:
-                _logger.info(u'Linea a analizar: %s' % line)
+                #_logger.info(u'Linea a analizar: %s' % line)
                 # filtrado del log en caso multiples instancias
                 # lo filtramos por nombre de la base de datos
                 if not line:
                     # linea vacia, no la tomo en cuenta
                     pass
                 if db_name in line:
-                    _logger.info(u'Linea tiene el nombre de la base de datos: %s' % db_name)
+                    #_logger.info(u'Linea tiene el nombre de la base de datos: %s' % db_name)
                     if self._compare_date_time_on_log_line(until_date, line):
                         data_extract.append(line)
-                        _logger.info(u'Linea agregada: %s' % line)
+                        #_logger.info(u'Linea agregada: %s' % line)
                     else:
                         # esta parte del log ya no se requiere
                         break
@@ -147,6 +147,7 @@ class ViewLogs(models.TransientModel):
 
     # Tiempos estandarizados para revision de logs
     _TIEMPO = [
+        ('1',u'1 minuto'),
         ('5',u'5 minutos'),
         ('10',u'10 minutos'),
         ('30',u'30 minutos'),
