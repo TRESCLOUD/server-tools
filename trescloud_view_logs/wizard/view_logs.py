@@ -90,7 +90,7 @@ class ViewLogs(models.TransientModel):
                     # linea vacia, no la tomo en cuenta
                     pass
                 if db_name in line:
-                    _logger.info(u'Linea tiene el nombre de labse de datos: %s' % db_name)
+                    _logger.info(u'Linea tiene el nombre de la base de datos: %s' % db_name)
                     if self._compare_date_time_on_log_line(until_date, line):
                         data_extract.append(line)
                         _logger.info(u'Linea agregada: %s' % line)
@@ -116,8 +116,9 @@ class ViewLogs(models.TransientModel):
         """
         Funcion que ejecuta la carga del log para mostrarlo en campo tipo texto
         """
-        log_data = '\n'.join(self._get_latest_n_minutes_odoo_log(int(self.tiempo)))
-        _logger.info(u'Numero de lineas obtenidas: %s' % len(log_data))
+        data_extract = self._get_latest_n_minutes_odoo_log(int(self.tiempo))
+        _logger.info(u'Numero de lineas obtenidas: %s' % len(data_extract))
+        log_data = '\n'.join(data_extract)
         self.log_detail = log_data
         return True
 
