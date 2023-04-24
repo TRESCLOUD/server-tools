@@ -112,8 +112,9 @@ class ViewLogs(models.TransientModel):
         """
         Funcion que ejecuta la carga del log para mostrarlo en campo tipo texto
         """
-        self.log_detail = '\n'.join(self._get_latest_n_minutes_odoo_log(int(self.tiempo)))
-        _logger.info(u'Numero de lineas obtenidas: %s' % len(self.log_detail))
+        log_data = '\n'.join(self._get_latest_n_minutes_odoo_log(int(self.tiempo)))
+        _logger.info(u'Numero de lineas obtenidas: %s' % len(log_data))
+        self.log_detail = log_data
         return True
 
 
