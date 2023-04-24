@@ -21,21 +21,10 @@ class ViewLogs(models.TransientModel):
     https://code.activestate.com/recipes/439045-read-a-text-file-backwards-yet-another-implementat/
     """
 
-    def _reverseReadFile(file, BLKSIZE = 4096):
+    def _reverseReadFile(self, file, BLKSIZE = 4096):
         """Read a file line by line, backwards"""
-        # depende la version de python, el metodo seekable existe en python 3.x
-        _logger.info(u'Version de python usada: %s' % sys.version)
-
-        if sys.version[:2] == '2.':
-            try:
-                file.tell()
-            except:
-                # no se permite usar como stream
-                return
-        elif sys.version[:2] == '3.':
-            _logger.info(u'Contenido variable file: %s' % file)
-            if( not file.seekable() ):
-                return
+        if( not file.seekable() ):
+            return
 
         buf = ""
         file.seek(0, 2)
