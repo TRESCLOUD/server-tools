@@ -119,8 +119,28 @@ class ViewLogs(models.TransientModel):
         data_extract = self._get_latest_n_minutes_odoo_log(int(self.tiempo))
         _logger.info(u'Numero de lineas obtenidas: %s' % len(data_extract))
         log_data = '\n'.join(data_extract)
-        self.log_detail = log_data
-        return True
+        #self.log_detail = log_data
+        # levanto el mismo wizard con el texto obtenido
+        '''
+        Levanta el wizard de visualizacion de logs
+        '''
+        view = self.env.ref('trescloud_view_logs.wizard_view_logs_form')
+        default = {
+            'default_log_detail': log_data,
+            'default_tiempo': self.tiempo
+        }
+
+        return {
+            'name': u'Visor del log solicitado:',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': view.id or False,
+            'res_model': 'view.logs',
+            'type': 'ir.actions.act_window',
+            'nodestroy': True,
+            'target': 'self',
+            'context': default
+        }
 
 
     # Tiempos estandarizados para revision de logs
