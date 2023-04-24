@@ -23,8 +23,9 @@ class ViewLogs(models.TransientModel):
 
     def _reverseReadFile(file, BLKSIZE = 4096):
         """Read a file line by line, backwards"""
-        buf = ""
         # depende la version de python, el metodo seekable existe en python 3.x
+        _logger.info(u'Version de python usada: %s' % sys.version)
+
         if sys.version[:2] == '2.':
             try:
                 file.tell()
@@ -32,9 +33,11 @@ class ViewLogs(models.TransientModel):
                 # no se permite usar como stream
                 return
         elif sys.version[:2] == '3.':
+            _logger.info(u'Contenido variable file: %s' % file)
             if( not file.seekable() ):
                 return
 
+        buf = ""
         file.seek(0, 2)
         lastchar = file.read(1)
         trailing_newline = (lastchar == "\n")
