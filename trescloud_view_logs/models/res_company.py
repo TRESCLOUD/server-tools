@@ -23,6 +23,6 @@ class Company(models.Model):
             'res_model': 'view.logs',
             'type': 'ir.actions.act_window',
             'nodestroy': True,
-            #'target': 'new',
-            'target': 'self',
+            'target': 'new',
+            #'target': 'self',
         }
