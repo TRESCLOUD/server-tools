@@ -83,6 +83,8 @@ class ViewLogs(models.TransientModel):
             # filtrado del log en caso multiples instancias
             # lo filtramos por nombre de la base de datos
             _logger.info(u'Linea de log bajo analisis: %s' % line)
+            if not line:
+                pass
             if db_name in line:
                 if self._compare_date_time_on_log_line(until_date, line):
                     data_extract.append(line)
