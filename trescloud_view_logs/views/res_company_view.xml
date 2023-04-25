@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="view_res_company_trescloud_view_logs_form" model="ir.ui.view">
+		<field name="name">view.res.company.trescloud_view_logs.form</field>
+		<field name="model">res.company</field>
+		<field name="inherit_id" ref="base.view_company_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//notebook" position="inside">
+				<page name="trescloud_logs" string="Trescloud View Logs">
+					<group colspan="4" col="4">
+						<button name="action_wizard_view_odoo_log" string="Ver log de Odoo" type="object" class="oe_highlight"/>
+					</group>
+				</page>
+	   		</xpath>
+		</field>
+	</record>
+
+</odoo>
