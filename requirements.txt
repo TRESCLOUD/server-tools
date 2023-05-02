@@ -9,3 +9,4 @@ lxml
 mako
 odoorpc
 openupgradelib
+file_read_backwards==3.0.0
