@@ -15,3 +15,4 @@ pysftp
 sentry_sdk<=1.9.0
 unidecode
 unittest-xml-reporting
+file_read_backwards==2.0.0
