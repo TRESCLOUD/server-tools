@@ -52,23 +52,36 @@ class ViewLogs(models.TransientModel):
     #             # Start-of-file
     #             return
 
+    def _get_log_datetime(self, log_line, current_year):
+        try:
+            # Caso syslog típico (fuera de contenedor)
+            date_line = str(current_year) + " " + log_line[:15]
+            return datetime.strptime(date_line, '%Y %b %d %H:%M:%S')
+        except ValueError:
+            try:
+                # Caso formato ISO 8601 (contenedor docker / journald)
+                return datetime.fromisoformat(log_line[:26])
+            except ValueError:
+                return None
+
     def _compare_date_time_on_log_line(self, date1, log_line):
         """
         Compara la fecha de la linea de log con la fecha entregada
         indicando si cumple la condicion de ser mayor la fecha del log
         que la fecha enviada por referencia
 
-        log actual:
+        logs actual:
 
-        Apr 21 17:42:25 ip-172-31-53-98 odoo-15-trescloud[671]: 2023-04-21 17:42:25,278 101421 INFO ...
+        1) Apr 21 17:42:25 ip-172-31-53-98 odoo-15-trescloud[671]: 2023-04-21 17:42:25,278 101421 INFO ...
 
+        2) 2025-05-01T12:26:10.450380+00:00 ip-192-168-10-12 odoov16-aditmaq16[77915]: 2025-05-01 12:26:10,450 1 #033[1;31m#033[1;49mERROR#033[0m aditmaq20250310 odoo.service.server: WorkerCron (200) timeout after 120s #015
         """
-        # extraigo la fecha y le agrego el año actual
-        date_line = str(date1.year) + " " + log_line[:15]
-        # convierto a objeto
-        log_date = datetime.strptime(date_line, '%Y %b %d %H:%M:%S')
-        #_logger.info(u'fechas a comparar, log_date %s, date1 %s' % (log_date, date1))
-        return log_date > date1
+        log_date = self._get_log_datetime(log_line, date1.year)
+        if log_date:
+            #_logger.info(u'fechas a comparar, log_date %s, date1 %s' % (log_date, date1))
+            return log_date > date1
+        #_logger.info(u'No se pudo obtener la fecha para poder comparar')
+        return False
 
     def _get_latest_n_minutes_odoo_log(self, minutes):
         """
@@ -86,9 +99,9 @@ class ViewLogs(models.TransientModel):
                 #_logger.info(u'Linea a analizar: %s' % line)
                 # filtrado del log en caso multiples instancias
                 # lo filtramos por nombre de la base de datos
-                if not line:
-                    # linea vacia, no la tomo en cuenta
-                    pass
+                # En algunos casos podrías tener líneas truncadas o vacías. Asegura un continue si log_line no cumple longitud mínima:
+                if not line or len(line) < 20:
+                    continue
                 if db_name in line:
                     #_logger.info(u'Linea tiene el nombre de la base de datos: %s' % db_name)
                     if self._compare_date_time_on_log_line(until_date, line):
