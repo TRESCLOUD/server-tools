@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+		<record id="wizard_view_logs_form" model="ir.ui.view">
+            <field name="name">wizard.view.logs.form</field>
+            <field name="model">view.logs</field>
+            <field name="arch" type="xml">
+                <form string="Visualizacion de Logs">
+                    <group col="2" colspan="2">
+                        <field name="tiempo" required="1"/>
+                    </group>
+                    <label for="log_detail"/>
+                    <div>
+                        <field name="log_detail" nolabel="1" readonly="1"/>
+                    </div>
+                    <footer>
+                        <button name="execute_read_log" string="Mostrar" type="object" class="oe_highlight"/>
+                        o
+                        <button class="oe_link" special="cancel" string="Cerrar"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+</odoo>
