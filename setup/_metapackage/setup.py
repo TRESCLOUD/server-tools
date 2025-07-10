@@ -8,6 +8,8 @@ setuptools.setup(
     description="Meta package for oca-server-tools Odoo addons",
     version=version,
     install_requires=[
+        'odoo-addon-attachment_delete_restrict>=16.0dev,<16.1dev',
+        'odoo-addon-attachment_logging>=16.0dev,<16.1dev',
         'odoo-addon-attachment_queue>=16.0dev,<16.1dev',
         'odoo-addon-attachment_synchronize>=16.0dev,<16.1dev',
         'odoo-addon-attachment_unindex_content>=16.0dev,<16.1dev',
@@ -54,6 +56,7 @@ setuptools.setup(
         'odoo-addon-nsca_client>=16.0dev,<16.1dev',
         'odoo-addon-odoo_test_xmlrunner>=16.0dev,<16.1dev',
         'odoo-addon-onchange_helper>=16.0dev,<16.1dev',
+        'odoo-addon-postgres_vacuum>=16.0dev,<16.1dev',
         'odoo-addon-rpc_helper>=16.0dev,<16.1dev',
         'odoo-addon-scheduler_error_mailer>=16.0dev,<16.1dev',
         'odoo-addon-sentry>=16.0dev,<16.1dev',
