@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 {
-    "name": "Audit Log",
+    "name": "Audit Log (Beta pre-20)",
     "version": "1.0",
     "author": "ABF OSIELL, Odoo Community Association (OCA)",
     "license": "AGPL-3",
